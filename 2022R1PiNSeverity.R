@@ -1,7 +1,7 @@
 # The file to load and calculate the PiN Severity for HH data set
 # Date source HNAP WASH HH assessment 2022 Round 1 [January - February]
 # Author: Umar Daraz; udaraz@unicef.org, umar.daraz@gmail.com MY EDIT
-# Contributes ( Ramy Zaki : rh.zaki@gmail.com)
+# Contributers ( Ramy Zaki : rh.zaki@gmail.com)
 
 # Loading relevant Libraries ----
   options(java.parameters = "-Xmx2048m")
@@ -11,10 +11,11 @@
 {
    
   #Umar Computer
-  filepath <- "C:\\Users\\udaraz\\OneDrive - UNICEF\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
+  #filepath <- "C:\\Users\\udaraz\\OneDrive - UNICEF\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
   
   #rami Computer
-  #filepath <- "C:\\Users\\udaraz\\OneDrive - UNICEF\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
+  
+  filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
   
   
   RData_Main <- read.csv(paste(filepath,"WASH_HH_Survey_Dataset_Feb_2022_Main.csv",sep=""),encoding = "UTF-8")
@@ -81,7 +82,7 @@
       PiNSeverityData[PiNSeverityData$IndicatorFRC_CHK == "6", "IndicatorFRC"] <- 3
       PiNSeverityData[PiNSeverityData$IndicatorFRC_CHK == "7", "IndicatorFRC"] <- -1
       
-      #WASH_WoS_Sector_HNOs\HNO-2023\Round-1\Exceltool
+      #Data Source : WASH_WoS_Sector_HNOs\HNO-2023\Round-1\Exceltool
       
       #=IFERROR(
       #IF(EC3/3/[@[HH_Average_Monthly_Income]]*100<=100,EC3/3/[@[HH_Average_Monthly_Income]]*100,[@[W.13.2. What percentage of monthly income is used on desludging of septic tank? (asked only if ?Connection to HH septic tank? reported in W.13)]]),[@[W.13.2. What percentage of monthly income is used on desludging of septic tank? (asked only if ?Connection to HH septic tank? reported in W.13)]])
