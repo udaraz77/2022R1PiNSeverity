@@ -1,7 +1,7 @@
 # The file to load and calculate the PiN Severity for HH data set
 # Date source HNAP WASH HH assessment 2022 Round 1 [January - February]
-# Author: Umar Daraz; udaraz@unicef.org, umar.daraz@gmail.com
-# 
+# Author: Umar Daraz; udaraz@unicef.org, umar.daraz@gmail.com MY EDIT
+# Contributes ( Ramy Zaki : rh.zaki@gmail.com)
 
 # Loading relevant Libraries ----
   options(java.parameters = "-Xmx2048m")
@@ -9,8 +9,14 @@
 
 # Data loading ----
 {
-    filepath <- "C:\\Users\\udaraz\\OneDrive - UNICEF\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
-
+   
+  #Umar Computer
+  filepath <- "C:\\Users\\udaraz\\OneDrive - UNICEF\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
+  
+  #rami Computer
+  #filepath <- "C:\\Users\\udaraz\\OneDrive - UNICEF\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
+  
+  
   RData_Main <- read.csv(paste(filepath,"WASH_HH_Survey_Dataset_Feb_2022_Main.csv",sep=""),encoding = "UTF-8")
   RData_PresentMembers<-read.csv(paste(filepath,"WASH_HH_Survey_Dataset_Feb_2022_PresentMembers.csv",sep=""),encoding = "UTF-8")
   RData_AbsentMembers <- read.csv(paste(filepath,"WASH_HH_Survey_Dataset_Feb_2022_AbsentMembers.csv",sep=""),encoding = "UTF-8")
@@ -36,7 +42,7 @@
   PiNSeverityData$admin4PCode <- RData_Main$admin4
   PiNSeverityData$LocationType <- ifelse(RData_Main$locationType == 1, "Host-population", 
                                          ifelse(RData_Main$locationType == 2,"Returnee",
-                                                ifelse(RData_Main$locationType == 2,"Returnee",NA)))
+                                                ifelse(RData_Main$locationType == 3,"IDPs",NA)))
 
   PiNSeverityData$W1_MainWaterSource <- RData_Main$W1
   PiNSeverityData$MixingWaterSource <- RData_Main$W2_YesNo
@@ -75,8 +81,13 @@
       PiNSeverityData[PiNSeverityData$IndicatorFRC_CHK == "6", "IndicatorFRC"] <- 3
       PiNSeverityData[PiNSeverityData$IndicatorFRC_CHK == "7", "IndicatorFRC"] <- -1
       
+      #WASH_WoS_Sector_HNOs\HNO-2023\Round-1\Exceltool
+      
+      #=IFERROR(
+      #IF(EC3/3/[@[HH_Average_Monthly_Income]]*100<=100,EC3/3/[@[HH_Average_Monthly_Income]]*100,[@[W.13.2. What percentage of monthly income is used on desludging of septic tank? (asked only if ?Connection to HH septic tank? reported in W.13)]]),[@[W.13.2. What percentage of monthly income is used on desludging of septic tank? (asked only if ?Connection to HH septic tank? reported in W.13)]])
+      
       PiNSeverityData$IndicatorFRC_SS <- ifelse(PiNSeverityData$IndicatorFRC == -1, "",
-                                                ifelse(PiNSeverityData$IndicatorFRC > 0 | |PiNSeverityData$MainWaterSource == Bottle,1,
+                                                ifelse(PiNSeverityData$IndicatorFRC > 0 | xx |PiNSeverityData$MainWaterSource == Bottle,1,
                                                        ifelse(,3)))
       #=IF([@[W.18]="","",
       #IF(OR([@[W.18]]>0,Y3=1,N3="bottle"),1,
