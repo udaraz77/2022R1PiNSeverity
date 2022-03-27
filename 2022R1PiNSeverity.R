@@ -106,8 +106,14 @@
   ## replace 2 with "Yes, Treating drinking water"
   PiNSeverityData$DifferentiatingAnywayDrinkingWater <- gsub("2", "Yes, Treating drinking water", PiNSeverityData$DifferentiatingAnywayDrinkingWater)
   
+  ## replace 3 with "Yes, Using different source for drinking than for other household needs"
+  PiNSeverityData$DifferentiatingAnywayDrinkingWater <- gsub("3", "Yes, Using different source for drinking than for other household needs", PiNSeverityData$DifferentiatingAnywayDrinkingWater)
   
+  ## replace 4 with "Yes, Treating drinking water"
+  PiNSeverityData$DifferentiatingAnywayDrinkingWater <- gsub("4", "Yes, Storing drinking water differently", PiNSeverityData$DifferentiatingAnywayDrinkingWater)
   
+  ## replace 66 with "Yes, Other:"
+  PiNSeverityData$DifferentiatingAnywayDrinkingWater <- gsub("66", "Yes, Other:", PiNSeverityData$DifferentiatingAnywayDrinkingWater)
   
   
   #W.18. Can I have a glass of water to drink? (Request household for glass of water to drink, perform test and mark following. 1 Test / Household) Please mark one value
