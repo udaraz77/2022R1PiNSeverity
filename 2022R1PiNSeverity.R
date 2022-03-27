@@ -125,7 +125,7 @@
   ## indicators for severity scoring -----
   {
 
-    ###Severity Scoring for Indicator 1.1 FRC ----
+    ### Indicator 1.1 FRC ----
     {
       #Function Logic
       # if no data reported make it blank - no severity score assigned
@@ -164,8 +164,14 @@
       
       # Ramy to check
       PiNSeverityData$IndicatorFRC_SS <- ifelse(PiNSeverityData$IndicatorFRC == -1, "",
-                                                ifelse(PiNSeverityData$IndicatorFRC > 0 | ifelse(grep("Bottle", PiNSeverityData$MixingWaterSourceName, ignore.case=TRUE),TRUE,FALSE)| PiNSeverityData$MainWaterSource == Bottle,1,
-                                                       ifelse(xxxsdx,3)))
+                                                ifelse(PiNSeverityData$IndicatorFRC > 0 |
+                                                        grepl("Bottle", PiNSeverityData$MixingWaterSourceName) |
+                                                         grepl("Bottle", PiNSeverityData$W1_MainWaterSource),1,
+                                                       ifelse(PiNSeverityData$DifferentiatingAnywayDrinkingWater != "No",3,
+                                                              ifelse(PiNSeverityData$W1_MainWaterSource == "Water_trucking" |
+                                                                       PiNSeverityData$W1_MainWaterSource =="Open_well" |
+                                                                       PiNSeverityData$W1_MainWaterSource =="River",5,4))))
+      
       
       #=IF([@[W.18]="","",
       #IF(OR([@[W.18]]>0,Y3=1,N3="bottle"),1,
@@ -175,6 +181,12 @@
       #      [@[W1. What water source did your household use the most in the last 30 days?]]="River/Lake"),5,4))))
     }
     
+    ## Indicator 1.2 Water Sufficiency ----
+    {
+     
+      
+      #"" =IF([@[W.6. Did you have enough water in the last 30 days to meet your household needs?]]="Yes",1,IF(SUM([@[W.6.1. If no, How did you adjust for the lack of water? (choose all apply)/Reduce drinking water consumption]],[@[W.6.1. If no, How did you adjust for the lack of water? (choose all apply)/Drink water usually used for cleaning or purposes other than drinking]])>0,5,IF(SUM([@[W.6.1. If no, How did you adjust for the lack of water? (choose all apply)/Modify hygiene practices bath less etc.]],[@[W.6.1. If no, How did you adjust for the lack of water? (choose all apply)/Not being able to wash hands with sufficient frequency]])>0,4,3)))
+    }
     
     PiNSeverityData$uid <- RData_Main$X_id
     PiNSeverityData$uuid <- RData_Main$X_uuid
@@ -194,3 +206,5 @@ W2.River
 W2.Bottle
 W2.O
 W2_OtWer 
+
+write.csv(PiNSeverityData,"C:\\Users\\udaraz\\OneDrive - UNICEF\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\Working_Folder_Data\\test1.csv")
