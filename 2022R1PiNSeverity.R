@@ -145,7 +145,7 @@
       # Ramy to check
       PiNSeverityData$IndicatorFRC_SS <- ifelse(PiNSeverityData$IndicatorFRC == -1, "",
                                                 ifelse(PiNSeverityData$IndicatorFRC > 0 | ifelse(grep("Bottle", PiNSeverityData$MixingWaterSourceName, ignore.case=TRUE),TRUE,FALSE)| PiNSeverityData$MainWaterSource == Bottle,1,
-                                                       ifelse(,3)))
+                                                       ifelse(xxxx,3)))
       
       #=IF([@[W.18]="","",
       #IF(OR([@[W.18]]>0,Y3=1,N3="bottle"),1,
