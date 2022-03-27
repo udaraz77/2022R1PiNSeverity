@@ -97,6 +97,19 @@
   # W2.1. What other water sources did you use?
   PiNSeverityData$MixingWaterSourceName <- RData_Main$W2
   
+  # W4 Are you differentiating in any way between your drinking water and non-drinking water, 
+  # like treating water (boiling, use filters or chlorine), using different source, 
+  # storing drinking water separately etc.? (choose all apply unless you selected NO)
+  PiNSeverityData$DifferentiatingAnywayDrinkingWater <- RData_Main$W4
+  ## replace 1 with "No"
+  PiNSeverityData$DifferentiatingAnywayDrinkingWater <- gsub("1", "No", PiNSeverityData$DifferentiatingAnywayDrinkingWater)
+  ## replace 2 with "Yes, Treating drinking water"
+  PiNSeverityData$DifferentiatingAnywayDrinkingWater <- gsub("2", "Yes, Treating drinking water", PiNSeverityData$DifferentiatingAnywayDrinkingWater)
+  
+  
+  
+  
+  
   #W.18. Can I have a glass of water to drink? (Request household for glass of water to drink, perform test and mark following. 1 Test / Household) Please mark one value
   PiNSeverityData$IndicatorFRC <- RData_Main$W18
   
