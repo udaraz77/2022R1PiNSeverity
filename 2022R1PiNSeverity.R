@@ -162,6 +162,28 @@
   PiNSeverityData$IndicatorHygiene_Access_w9.19<- RData_Main$w9.19
   
   
+  #W.10. What is the way you disposed of garbage in the last 30 days? (choose all apply)
+
+  PiNSeverityData$IndicatorSolidWaste_w10<- RData_Main$W10
+  
+ 
+  PiNSeverityData$IndicatorSolidWaste_w10 <- gsub("1", "Public garbage collection free", PiNSeverityData$IndicatorSolidWaste_w10)
+  PiNSeverityData$IndicatorSolidWaste_w10 <- gsub("2", "Private garbage collection paid", PiNSeverityData$IndicatorSolidWaste_w10)
+  PiNSeverityData$IndicatorSolidWaste_w10 <- gsub("3", "Garbage left in public areas", PiNSeverityData$IndicatorSolidWaste_w10)
+  PiNSeverityData$IndicatorSolidWaste_w10 <- gsub("4", "Garbage buried or burned", PiNSeverityData$IndicatorSolidWaste_w10)
+  PiNSeverityData$IndicatorSolidWaste_w10 <- gsub("5", "Garbage disposed of by household to a dumping location", PiNSeverityData$IndicatorSolidWaste_w10)
+  PiNSeverityData$IndicatorSolidWaste_w10 <- gsub("66", "Other", PiNSeverityData$IndicatorSolidWaste_w10)
+  
+  #W.10.2. If ?Public garbage collection (free)? or ?private garbage collection (paid)?, how frequently was garbage collected in the last 30 days? (choose one)
+  
+  PiNSeverityData$IndicatorSolidWaste_w10_2<- RData_Main$W10_2 
+  PiNSeverityData$IndicatorSolidWaste_w10_2 <- gsub("1", "Less than once a week", PiNSeverityData$IndicatorSolidWaste_w10_2)
+  PiNSeverityData$IndicatorSolidWaste_w10_2 <- gsub("2", "Once a week", PiNSeverityData$IndicatorSolidWaste_w10_2)
+  PiNSeverityData$IndicatorSolidWaste_w10_2 <- gsub("3", "More than once a week", PiNSeverityData$IndicatorSolidWaste_w10_2)
+  
+  
+  
+  
   
   
   
@@ -274,11 +296,51 @@
                                                                              PiNSeverityData$IndicatorHygiene_Access_w9.11,
                                                                              PiNSeverityData$IndicatorHygiene_Access_w9.19, na.rm=TRUE)>0, 3, 2)))
     
-      }    
+    }
     
+      ## Indicator 1.4 Solid Waste ----
+    
+    {
+      # IF
+      # (
+      #   OR (
+              #  [@[W.10. What is the most common way you disposed of garbage in the last 30 days? (choose all apply)/Garbage left in public areas]]=1,
+              #  [@[W.10.2. If ?Public garbage collection (free)? or ?private garbage collection (paid)?, how frequently was garbage collected in the last 30 days? (choose one)]]="PAID less than once a week",
+              #  [@[W.10.2. If ?Public garbage collection (free)? or ?private garbage collection (paid)?, how frequently was garbage collected in the last 30 days? (choose one)]]="FREE less than once a week"
+            #),4,
+      
+      #  IF([@[W.10. What is the most common way you disposed of garbage in the last 30 days? (choose all apply)/Garbage buried or burned]]=1,3,
+      
+      #      IF(SUM(
+      #         [@[W.10. What is the most common way you disposed of garbage in the last 30 days? (choose all apply)/Private garbage collection paid]],
+      #         [@[W.10. What is the most common way you disposed of garbage in the last 30 days? (choose all apply)/Garbage disposed of by household to a dumping location]],
+      #         [@[W.10. What is the most common way you disposed of garbage in the last 30 days? (choose all apply)/Other]])>0,2,1)
+      #     )
+      #)      
+            
+      
+    PiNSeverityData$IndicatorSolidWaste_SS <- ifelse (grepl("Public garbage collection free", PiNSeverityData$IndicatorSolidWaste_w10) |
+                                                             
+                                                          (grepl("Private garbage collection paid", PiNSeverityData$IndicatorSolidWaste_w10) & PiNSeverityData$IndicatorSolidWaste_w10_2=="Less than once a week"),4,
+                                                            
+                                                            ifelse (grepl("Garbage buried or burned", PiNSeverityData$IndicatorSolidWaste_w10_2),3,
+                                                                ifelse(sum(grepl("Private garbage collection paid", PiNSeverityData$IndicatorSolidWaste_w10),
+                                                                       grepl("Garbage disposed of by household to a dumping location", PiNSeverityData$IndicatorSolidWaste_w10),
+                                                                       grepl("Other", PiNSeverityData$IndicatorSolidWaste_w10))>0,2,1)))
+                                                       
+     
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+    
+      
+    }
     
     PiNSeverityData$uid <- RData_Main$X_id
     PiNSeverityData$uuid <- RData_Main$X_uuid
+    
+    
+    
+    
+    
   }
   
 
