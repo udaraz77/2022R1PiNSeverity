@@ -11,11 +11,11 @@
 {
    
   #Umar Computer
-  #filepath <- "C:\\Users\\udaraz\\OneDrive - UNICEF\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
+  filepath <- "C:\\Users\\udaraz\\OneDrive - UNICEF\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
   
   #rami Computer
   
-  filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
+  #filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
   
   
   RData_Main <- read.csv(paste(filepath,"WASH_HH_Survey_Dataset_Feb_2022_Main.csv",sep=""),encoding = "UTF-8")
@@ -209,8 +209,8 @@
       
       PiNSeverityData$IndicatorFRC_SS <- ifelse(PiNSeverityData$IndicatorFRC == -1, "",
                                                 ifelse(PiNSeverityData$IndicatorFRC > 0 |
-                                                        grepl("Bottle", PiNSeverityData$MixingWaterSourceName) |
-                                                         grepl("Bottle", PiNSeverityData$W1_MainWaterSource),1,
+                                                        grepl(c("Bottle","btl","River"), PiNSeverityData$MixingWaterSourceName) |
+                                                         grepl(c("Bottle"), PiNSeverityData$W1_MainWaterSource),1,
                                                        ifelse(PiNSeverityData$DifferentiatingAnywayDrinkingWater != "No",3,
                                                               ifelse(PiNSeverityData$W1_MainWaterSource == "Water_trucking" |
                                                                        PiNSeverityData$W1_MainWaterSource =="Open_well" |
@@ -246,8 +246,8 @@
       
        }
     
-      ## Indicator 1.3 Hygiene Access ----
-    
+      
+    ## Indicator 1.3 Hygiene Access ----
     {
       
       ##=IF([@[W.9. All items could access]]=1,1,
