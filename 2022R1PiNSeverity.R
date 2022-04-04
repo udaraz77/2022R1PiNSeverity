@@ -6,8 +6,9 @@
 # Loading relevant Libraries ----
   options(java.parameters = "-Xmx2048m")
   library(xlsx) #detach("package:xlsx", unload=TRUE)
-library(dplyr)
-library(pivottabler)
+  library(dplyr)
+  library(pivottabler)
+  library(reshape2)
 
 # Data loading ----
 {
@@ -16,6 +17,7 @@ library(pivottabler)
   #filepath <- "C:\\Users\\udaraz\\OneDrive - UNICEF\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
   
   #rami Computer
+  #Data Source : WASH_WoS_Sector_HNOs\HNO-2023\Round-1\Exceltool
   
   filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
   
@@ -208,10 +210,6 @@ library(pivottabler)
   PiNSeverityData$Indicatorwastewater_w13_1 <- gsub("66", "Other: please specify", PiNSeverityData$Indicatorwastewater_w13_1)
   
   
-  
-  
-  
-  
   #W.17. Can you please show me the place where you usually wash hands? (choose one)
   PiNSeverityData$Indicatorhandwashing_w17<- RData_Main$W17
   
@@ -223,11 +221,20 @@ library(pivottabler)
   PiNSeverityData$Indicatorhandwashing_w17_1<- gsub("4", "No water and soap", PiNSeverityData$Indicatorhandwashing_w17_1)
   PiNSeverityData$Indicatorhandwashing_w17_1<- gsub("5", "No hand washing facility", PiNSeverityData$Indicatorhandwashing_w17_1)
   
-  
+  #W.14. Has your household received any water, sanitation and hygiene
   PiNSeverityData$HHassistancereceived <- RData_Main$W14
   PiNSeverityData$HHassistancereceived<- gsub("1","Yes",PiNSeverityData$HHassistancereceived)
   PiNSeverityData$HHassistancereceived<- gsub("2","No",PiNSeverityData$HHassistancereceived)
   PiNSeverityData$HHassistancereceived<- gsub("3","Don?t Know/ Unsure",PiNSeverityData$HHassistancereceived)
+  
+  #CALCULATED % WATER AND DESLUDGING
+  
+    # W.7. What percentage of monthly income is used to buy water?  (Specify)
+  PiNSeverityData$Percent_MonthlyIncome_buy_Water<- RData_Main$W7
+  
+  # W.7.1. How much your HH spent in the past 30 days on purchasing water? (in SYP) (Specify)
+  PiNSeverityData$hh_MoneySpent_purchasing_Water<- RData_Main$W7_1
+  
   
   
   }
@@ -268,12 +275,7 @@ library(pivottabler)
       }
 
 
-      
-
-      
-      #Data Source : WASH_WoS_Sector_HNOs\HNO-2023\Round-1\Exceltool
-      
-      PiNSeverityData$IndicatorFRC_SS <- ifelse(PiNSeverityData$IndicatorFRC == -1, "",
+       PiNSeverityData$IndicatorFRC_SS <- ifelse(PiNSeverityData$IndicatorFRC == -1, "",
                                                 ifelse(PiNSeverityData$IndicatorFRC > 0 |
                                                         grepl("Bottle", PiNSeverityData$MixingWaterSourceName) |
                                                          grepl("Bottle", PiNSeverityData$W1_MainWaterSource),1,
@@ -414,31 +416,84 @@ PiNSeverityData$IndicatorSanitation_Problems_SS <- ifelse (PiNSeverityData$hhsiz
       
       
       
-
-       
-     
     }
     
-    PiNSeverityData$uid <- RData_Main$X_id
-    PiNSeverityData$uuid <- RData_Main$X_uuid
     
     
-    #Indicators and Thresholds '!$F$20 = 15
-    #Indicators and Thresholds '!$E$20 = 10
-    #Indicators and Thresholds '!$D$20 = 5
     
-    ## Indicator 1.6 % Spend water and desludging----
+    
+      ## Indicator 1.6 % Spend water and desludging----
+    
     {
-      
+      #Indicators and Thresholds '!$F$20 = 15
+      #Indicators and Thresholds '!$E$20 = 10
+      #Indicators and Thresholds '!$D$20 = 5
+    
+     
 #    =IF([@[CALCULATED % WATER AND DESLUDGING]]>'Indicators and Thresholds '!$F$20, 5,
- #   IF([@[CALCULATED % WATER AND DESLUDGING]]>'Indicators and Thresholds '!$E$20, 4
-  #     ,IF([@[CALCULATED % WATER AND DESLUDGING]]>'Indicators and Thresholds '!$D$20, 3, 
-   #        1)))
+#       IF([@[CALCULATED % WATER AND DESLUDGING]]>'Indicators and Thresholds '!$E$20, 4
+#         ,IF([@[CALCULATED % WATER AND DESLUDGING]]>'Indicators and Thresholds '!$D$20, 3, 
+#         1)))
+      
+      #loading the data
+      
+
+#     [CALCULATED % WATER AND DESLUDGING]  =SUM(WASH__Data[@[CALCULATED % WATER SPEND]:[CALCULATED % Desludging Spend]])
+      
+#     CALCULATED % WATER SPEND =IFERROR(IF(
+      
+#       ([@[W.7.1. How much your HH spent in the past 30 days on purchasing water? (in SYP) (Specify)]]/[@[HH_Average_Monthly_Income]])*100<=100,
+# 
+#       ([@[W.7.1. How much your HH spent in the past 30 days on purchasing water? (in SYP) (Specify)]]/[@[HH_Average_Monthly_Income]])*100,
+      
+#       [@[W.7. What percentage of monthly income is used to buy water?  (Specify)]]),
+# 
+#       [@[W.7. What percentage of monthly income is used to buy water?  (Specify)]])
+#       
+
+      
+      # HH average monthly income is added as 50 until the clear instruction on how to calculate is available
+      PiNSeverityData$HH_average_monthly_Income<- 50
+
+      #CALCULATED % WATER SPEND
+      
+      PiNSeverityData$percent_hh_sepend_water <- ifelse(
+                                                      PiNSeverityData$hh_MoneySpent_purchasing_Water/PiNSeverityData$HH_average_monthly_Income*100<=100,
+                                                      PiNSeverityData$hh_MoneySpent_purchasing_Water/PiNSeverityData$HH_average_monthly_Income*100,
+                                                      PiNSeverityData$Percent_MonthlyIncome_buy_Water
+                                                       )
+        
+
+      # CALCULATED % Desludging Spend=
+# 
+# IFERROR(IF(EC3/3/[@[HH_Average_Monthly_Income]]*100<=100,
+# EC3/3/[@[HH_Average_Monthly_Income]]*100,
+# [@[W.13.2. What percentage of monthly income is used on desludging of septic tank? (asked only if ?Connection to HH septic tank? reported in W.13)]]),
+# [@[W.13.2. What percentage of monthly income is used on desludging of septic tank? (asked only if ?Connection to HH septic tank? reported in W.13)]])
+
+    # EC3= W.13.3. How much your HH spent in the past 3 Months on septic tank desludging? (in SYP)
+      PiNSeverityData$HH_moneySpent_3m_desludging_septic_tank<- RData_Main$W13_3
+      PiNSeverityData$Percent_MonthlyIncome_desludging_septic_tank<- RData_Main$W13_2
+    
+      
+      
+PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
+      
+                                                    PiNSeverityData$HH_moneySpent_3m_desludging_septic_tank/3/PiNSeverityData$HH_average_monthly_Income*100<=100,
+                                                    PiNSeverityData$HH_moneySpent_3m_desludging_septic_tank/3/PiNSeverityData$HH_average_monthly_Income*100,
+                                                    PiNSeverityData$Percent_MonthlyIncome_desludging_septic_tank
+                                                    )
+                                                    
+PiNSeverityData$percent_hh_sepend_Desludging<- ifelse(is.na(PiNSeverityData$percent_hh_sepend_Desludging), 0,PiNSeverityData$percent_hh_sepend_Desludging)      
+PiNSeverityData$percent_hh_sepend_water<- ifelse(is.na(PiNSeverityData$percent_hh_sepend_water),0, PiNSeverityData$percent_hh_sepend_water)
+        
+        
+#     [CALCULATED % WATER AND DESLUDGING]  =SUM(WASH__Data[@[CALCULATED % WATER SPEND]:[CALCULATED % Desludging Spend]])
+        
+    
+    PiNSeverityData$percent_hh_sepend_water_Desludging <- PiNSeverityData$percent_hh_sepend_water+ PiNSeverityData$percent_hh_sepend_Desludging
+    
     }
-    
-    
-    
-    
     
     
     ## Indicator 1.7 Household handwashing facilities----
@@ -450,44 +505,46 @@ PiNSeverityData$IndicatorSanitation_Problems_SS <- ifelse (PiNSeverityData$hhsiz
       #    )
       
       
-      ifelse(PiNSeverityData$Indicatorhandwashing_w17 =="Refuse","",
+      PiNSeverityData$Indicatorhh_handwashing_facilities_SS<- ifelse(PiNSeverityData$Indicatorhandwashing_w17 =="Refuse","",
             ifelse(grepl("both soap and water", PiNSeverityData$Indicatorhandwashing_w17_1), 1, 
                    ifelse(grepl("Soap only", PiNSeverityData$Indicatorhandwashing_w17_1), 3, 4)
+                   
                    )
             )
       
     }
     
-    
-    
-    
-    
     ## Indicator 1.8 Househould receives humanitarian assistance----
     {
       
-      #A=hh.uuid
-      #F=A.12 Is this an IDP site? ?The term "IDP sites" refers to IDP camps, informal settlements and collective centers/shelters?
+      #   2.1 % of Households receiving humanitarian assistance		20%	40%	60%	80%
       
+      TEMPdataframeAssistanceReceived <- PiNSeverityData %>% 
+              group_by(admin3PCode,
+              HHassistancereceived)%>% 
+              summarise(counthhassisted=n())
       
-    #  =IFNA(
-              #INDEX('% of HHs received assisitance '!F:F,
-              #MATCH([@[A.9 Sub- District]],'% of HHs received assisitance '!A:A,0)
-              #),
-        #"")
-      
-      
-    #  TEMPdataframeAssistanceReceived <- PiNSeverityData %>% 
-     #   group_by(admin3PCode,
-      #           HHassistancereceived)%>% 
-      #  summarise(counthhassisted=n())
-      
-   #   2.1 % of Households receiving humanitarian assistance		20%	40%	60%	80%
-      
-      
-      
-      TEMPdataframeAssistanceReceived<- qpvt(PiNSeverityData, "admin3PCode", "HHassistancereceived", "n()") 
-      
-      
+     
+     TEMPdataframeAssistanceReceived <- dcast(TEMPdataframeAssistanceReceived, admin3PCode ~ HHassistancereceived, value.var="counthhassisted", fun.aggregate=sum)
+     
+     TEMPdataframeAssistanceReceived$total <- TEMPdataframeAssistanceReceived$`Don?t Know/ Unsure` +
+                                                  TEMPdataframeAssistanceReceived$Yes +
+                                                    TEMPdataframeAssistanceReceived$No
+       
+     TEMPdataframeAssistanceReceived$PercentDKN <- TEMPdataframeAssistanceReceived$`Don?t Know/ Unsure` / TEMPdataframeAssistanceReceived$total
+     TEMPdataframeAssistanceReceived$PercentYes <- TEMPdataframeAssistanceReceived$Yes / TEMPdataframeAssistanceReceived$total                                           
+     TEMPdataframeAssistanceReceived$PercentNo <- TEMPdataframeAssistanceReceived$No / TEMPdataframeAssistanceReceived$total
+     
+     TEMPdataframeAssistanceReceived$Indicatorhh_Received_SS <- ifelse(TEMPdataframeAssistanceReceived$PercentYes >0.8,5, 
+                                                  ifelse(TEMPdataframeAssistanceReceived$PercentYes >0.6,4, 
+                                                         ifelse(TEMPdataframeAssistanceReceived$PercentYes >0.4,3, 
+                                                                ifelse(TEMPdataframeAssistanceReceived$PercentYes >0.2,2,1)))) 
+ 
+# to hide all un-needed columns and add the HHreceivedSS indicator to the PINseverity data frame
+   
+   TEMPdataframeAssistanceReceived = subset(TEMPdataframeAssistanceReceived, select = c(admin3PCode,Indicatorhh_Received_SS))
+   PiNSeverityData<- merge(PiNSeverityData, TEMPdataframeAssistanceReceived, by="admin3PCode")
+     
     }
     
     
