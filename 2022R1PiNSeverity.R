@@ -6,6 +6,9 @@
 # Loading relevant Libraries ----
   options(java.parameters = "-Xmx2048m")
   library(xlsx) #detach("package:xlsx", unload=TRUE)
+  library(dplyr)
+  library(pivottabler)
+  library(reshape2)
 
 # Data loading ----
 {
@@ -14,6 +17,7 @@
   filepath <- "C:\\Users\\udaraz\\OneDrive - UNICEF\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
   
   #rami Computer
+  #Data Source : WASH_WoS_Sector_HNOs\HNO-2023\Round-1\Exceltool
   
   #filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
   
@@ -162,16 +166,85 @@
   PiNSeverityData$IndicatorHygiene_Access_w9.19<- RData_Main$w9.19
   
   
+  #W.10. What is the way you disposed of garbage in the last 30 days? (choose all apply)
+
+  PiNSeverityData$IndicatorSolidWaste_w10<- RData_Main$W10
+  
+ 
+  PiNSeverityData$IndicatorSolidWaste_w10 <- gsub("1", "Public garbage collection free", PiNSeverityData$IndicatorSolidWaste_w10)
+  PiNSeverityData$IndicatorSolidWaste_w10 <- gsub("2", "Private garbage collection paid", PiNSeverityData$IndicatorSolidWaste_w10)
+  PiNSeverityData$IndicatorSolidWaste_w10 <- gsub("3", "Garbage left in public areas", PiNSeverityData$IndicatorSolidWaste_w10)
+  PiNSeverityData$IndicatorSolidWaste_w10 <- gsub("4", "Garbage buried or burned", PiNSeverityData$IndicatorSolidWaste_w10)
+  PiNSeverityData$IndicatorSolidWaste_w10 <- gsub("5", "Garbage disposed of by household to a dumping location", PiNSeverityData$IndicatorSolidWaste_w10)
+  PiNSeverityData$IndicatorSolidWaste_w10 <- gsub("66", "Other", PiNSeverityData$IndicatorSolidWaste_w10)
+  
+  #W.10.2. If ?Public garbage collection (free)? or ?private garbage collection (paid)?, how frequently was garbage collected in the last 30 days? (choose one)
+  
+  PiNSeverityData$IndicatorSolidWaste_w10_2<- RData_Main$W10_2 
+  PiNSeverityData$IndicatorSolidWaste_w10_2 <- gsub("1", "Less than once a week", PiNSeverityData$IndicatorSolidWaste_w10_2)
+  PiNSeverityData$IndicatorSolidWaste_w10_2 <- gsub("2", "Once a week", PiNSeverityData$IndicatorSolidWaste_w10_2)
+  PiNSeverityData$IndicatorSolidWaste_w10_2 <- gsub("3", "More than once a week", PiNSeverityData$IndicatorSolidWaste_w10_2)
+  
+  #W11 HOUSEHOLD SIZE
+  PiNSeverityData$hhsize<- RData_Main$W11_hhnumber
+  
+  #W.13.1. Did you face any challenges related to wastewater disposal or toilet functionality in the past month? (choose all apply)
+  PiNSeverityData$Indicatorwastewater_w13_1<- RData_Main$W13_1
+  
+  PiNSeverityData$Indicatorwastewater_w13_1 <- gsub("NoProblem", "No Problem", PiNSeverityData$Indicatorwastewater_w13_1)
+  
+  PiNSeverityData$Indicatorwastewater_w13_1 <- gsub("1", "Could not afford desludging of septic tank", PiNSeverityData$Indicatorwastewater_w13_1)
+  PiNSeverityData$Indicatorwastewater_w13_1 <- gsub("2", "Toilets unclean", PiNSeverityData$Indicatorwastewater_w13_1)
+  PiNSeverityData$Indicatorwastewater_w13_1 <- gsub("3", "It is not safe No light", PiNSeverityData$Indicatorwastewater_w13_1)
+  PiNSeverityData$Indicatorwastewater_w13_1 <- gsub("4", "Connection to sewage blocked", PiNSeverityData$Indicatorwastewater_w13_1)
+  PiNSeverityData$Indicatorwastewater_w13_1 <- gsub("5", "Lack of ability to get to the toilet without assistance", PiNSeverityData$Indicatorwastewater_w13_1)
+  PiNSeverityData$Indicatorwastewater_w13_1 <- gsub("6", "Not enough facilities  -too crowded", PiNSeverityData$Indicatorwastewater_w13_1)
+  PiNSeverityData$Indicatorwastewater_w13_1 <- gsub("7", "It is not safe Bothered on the way", PiNSeverityData$Indicatorwastewater_w13_1)
+  PiNSeverityData$Indicatorwastewater_w13_1 <- gsub("8", "Sewage overflowing in the neighborhood", PiNSeverityData$Indicatorwastewater_w13_1)
+  PiNSeverityData$Indicatorwastewater_w13_1 <- gsub("9", "Pipes blocked (inside the house)", PiNSeverityData$Indicatorwastewater_w13_1)
+  PiNSeverityData$Indicatorwastewater_w13_1 <- gsub("10", "Lack of privacy no separation between men and women", PiNSeverityData$Indicatorwastewater_w13_1)
+  PiNSeverityData$Indicatorwastewater_w13_1 <- gsub("11", "It is not safe Bothered at facility", PiNSeverityData$Indicatorwastewater_w13_1)
+  PiNSeverityData$Indicatorwastewater_w13_1 <- gsub("12", "Septic tank not emptied due to unavailability of desludging service", PiNSeverityData$Indicatorwastewater_w13_1)
+  PiNSeverityData$Indicatorwastewater_w13_1 <- gsub("13", "No water to flush", PiNSeverityData$Indicatorwastewater_w13_1)
+  PiNSeverityData$Indicatorwastewater_w13_1 <- gsub("14", "It is not safe No Lock bolt", PiNSeverityData$Indicatorwastewater_w13_1)
+  PiNSeverityData$Indicatorwastewater_w13_1 <- gsub("66", "Other: please specify", PiNSeverityData$Indicatorwastewater_w13_1)
+  
+  
+  #W.17. Can you please show me the place where you usually wash hands? (choose one)
+  PiNSeverityData$Indicatorhandwashing_w17<- RData_Main$W17
+  
+  #W.17.1 Soap and water at the handwashing facility? (OBSERVATION)
+  PiNSeverityData$Indicatorhandwashing_w17_1<- RData_Main$W17_1
+  PiNSeverityData$Indicatorhandwashing_w17_1<- gsub("1", "Soap only", PiNSeverityData$Indicatorhandwashing_w17_1)
+  PiNSeverityData$Indicatorhandwashing_w17_1<- gsub("2", "Water only", PiNSeverityData$Indicatorhandwashing_w17_1)
+  PiNSeverityData$Indicatorhandwashing_w17_1<- gsub("3", "both soap and water", PiNSeverityData$Indicatorhandwashing_w17_1)
+  PiNSeverityData$Indicatorhandwashing_w17_1<- gsub("4", "No water and soap", PiNSeverityData$Indicatorhandwashing_w17_1)
+  PiNSeverityData$Indicatorhandwashing_w17_1<- gsub("5", "No hand washing facility", PiNSeverityData$Indicatorhandwashing_w17_1)
+  
+  #W.14. Has your household received any water, sanitation and hygiene
+  PiNSeverityData$HHassistancereceived <- RData_Main$W14
+  PiNSeverityData$HHassistancereceived<- gsub("1","Yes",PiNSeverityData$HHassistancereceived)
+  PiNSeverityData$HHassistancereceived<- gsub("2","No",PiNSeverityData$HHassistancereceived)
+  PiNSeverityData$HHassistancereceived<- gsub("3","Don?t Know/ Unsure",PiNSeverityData$HHassistancereceived)
+  
+  #CALCULATED % WATER AND DESLUDGING
+  
+    # W.7. What percentage of monthly income is used to buy water?  (Specify)
+  PiNSeverityData$Percent_MonthlyIncome_buy_Water<- RData_Main$W7
+  
+  # W.7.1. How much your HH spent in the past 30 days on purchasing water? (in SYP) (Specify)
+  PiNSeverityData$hh_MoneySpent_purchasing_Water<- RData_Main$W7_1
   
   
   
-}
+  }
+
 
 # Severity Scoring at HH ----
   ## indicators for severity scoring -----
   {
 
-    ### Indicator 1.1 FRC ----
+      ### Indicator 1.1 FRC ----
     {
       #Function Logic
       # if no data reported make it blank - no severity score assigned
@@ -202,12 +275,7 @@
       }
 
 
-      
-
-      
-      #Data Source : WASH_WoS_Sector_HNOs\HNO-2023\Round-1\Exceltool
-      
-      PiNSeverityData$IndicatorFRC_SS <- ifelse(PiNSeverityData$IndicatorFRC == -1, "",
+       PiNSeverityData$IndicatorFRC_SS <- ifelse(PiNSeverityData$IndicatorFRC == -1, "",
                                                 ifelse(PiNSeverityData$IndicatorFRC > 0 |
                                                         grepl(c("Bottle","btl","River"), PiNSeverityData$MixingWaterSourceName) |
                                                          grepl(c("Bottle"), PiNSeverityData$W1_MainWaterSource),1,
@@ -225,7 +293,7 @@
       #      [@[W1. What water source did your household use the most in the last 30 days?]]="River/Lake"),5,4))))
     }
     
-    ## Indicator 1.2 Water Sufficiency ----
+      ## Indicator 1.2 Water Sufficiency ----
     {
       
   #"" =IF([@[W.6. Did you have enough water in the last 30 days to meet your household needs?]]="Yes",1,
@@ -274,11 +342,213 @@
                                                                              PiNSeverityData$IndicatorHygiene_Access_w9.11,
                                                                              PiNSeverityData$IndicatorHygiene_Access_w9.19, na.rm=TRUE)>0, 3, 2)))
     
-      }    
+    }
+    
+      ## Indicator 1.4 Solid Waste ----
+    
+    {
+      # IF
+      # (
+      #   OR (
+              #  [@[W.10. What is the most common way you disposed of garbage in the last 30 days? (choose all apply)/Garbage left in public areas]]=1,
+              #  [@[W.10.2. If ?Public garbage collection (free)? or ?private garbage collection (paid)?, how frequently was garbage collected in the last 30 days? (choose one)]]="PAID less than once a week",
+              #  [@[W.10.2. If ?Public garbage collection (free)? or ?private garbage collection (paid)?, how frequently was garbage collected in the last 30 days? (choose one)]]="FREE less than once a week"
+            #),4,
+      
+      #  IF([@[W.10. What is the most common way you disposed of garbage in the last 30 days? (choose all apply)/Garbage buried or burned]]=1,3,
+      
+      #      IF(SUM(
+      #         [@[W.10. What is the most common way you disposed of garbage in the last 30 days? (choose all apply)/Private garbage collection paid]],
+      #         [@[W.10. What is the most common way you disposed of garbage in the last 30 days? (choose all apply)/Garbage disposed of by household to a dumping location]],
+      #         [@[W.10. What is the most common way you disposed of garbage in the last 30 days? (choose all apply)/Other]])>0,2,1)
+      #     )
+      #)      
+            
+      
+    PiNSeverityData$IndicatorSolidWaste_SS <- ifelse (grepl("Garbage left in public areas", PiNSeverityData$IndicatorSolidWaste_w10) |
+                                                             
+                                                          (grepl("Private garbage collection paid", PiNSeverityData$IndicatorSolidWaste_w10) & PiNSeverityData$IndicatorSolidWaste_w10_2=="Less than once a week"),4,
+                                                            
+                                                            ifelse (grepl("Garbage buried or burned", PiNSeverityData$IndicatorSolidWaste_w10_2),3,
+                                                                ifelse(sum(grepl("Private garbage collection paid", PiNSeverityData$IndicatorSolidWaste_w10),
+                                                                       grepl("Garbage disposed of by household to a dumping location", PiNSeverityData$IndicatorSolidWaste_w10),
+                                                                       grepl("Other", PiNSeverityData$IndicatorSolidWaste_w10))>0,2,1)))
+                                                       
+     
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+
+      
+    }
+      ## Indicator 1.5 Sanitation Problems----
+    {
+      
+    # IF([@['#:]]>20,"",
+    #     IF(
+    #       OR
+    #             (SUM
+    #             ([@[W.13.1. Did you face any challenges related to wastewater disposal or toilet functionality in the past month? (choose all apply)/Septic tank not emptied due to unavailability of desludging service]],
+    #             [@[W.13.1. Did you face any challenges related to wastewater disposal or toilet functionality in the past month? (choose all apply)/Could not afford desludging of septic tank]],
+    #             [@[W.13.1. Did you face any challenges related to wastewater disposal or toilet functionality in the past month? (choose all apply)/Sewage overflowing in the neighborhood]]
+      #           )>0,
+      
+    #             [@['#:]]>4
+    # 
+                  #),4,
+    #         
+    #         IF([@[W.13.1. Did you face any challenges related to wastewater disposal or toilet functionality in the past month? (choose all apply)/No Problem]]=1,1,3)
+    #       )
+    #   )
+      
+      
+    
+
+PiNSeverityData$IndicatorSanitation_Problems_SS <- ifelse (PiNSeverityData$hhsize>20,"", 
+                                                             ifelse(
+                                                                 grepl("Septic tank not emptied due to unavailability of desludging service", PiNSeverityData$Indicatorwastewater_w13_1) | 
+                                                                 grepl("Could not afford desludging of septic tank", PiNSeverityData$Indicatorwastewater_w13_1) | 
+                                                                 grepl("Sewage overflowing in the neighborhood", PiNSeverityData$Indicatorwastewater_w13_1)|
+                                                                 PiNSeverityData$hhsize> 4, 4,
+                                                              
+                                                                  ifelse(grepl("No Problem", PiNSeverityData$Indicatorwastewater_w13_1)==TRUE,1, 3))
+                                                             )
+                                                      
+      
+      
+      
+      
+    }
     
     
-    PiNSeverityData$uid <- RData_Main$X_id
-    PiNSeverityData$uuid <- RData_Main$X_uuid
+    
+    
+    
+      ## Indicator 1.6 % Spend water and desludging----
+    
+    {
+      #Indicators and Thresholds '!$F$20 = 15
+      #Indicators and Thresholds '!$E$20 = 10
+      #Indicators and Thresholds '!$D$20 = 5
+    
+     
+#    =IF([@[CALCULATED % WATER AND DESLUDGING]]>'Indicators and Thresholds '!$F$20, 5,
+#       IF([@[CALCULATED % WATER AND DESLUDGING]]>'Indicators and Thresholds '!$E$20, 4
+#         ,IF([@[CALCULATED % WATER AND DESLUDGING]]>'Indicators and Thresholds '!$D$20, 3, 
+#         1)))
+      
+      #loading the data
+      
+
+#     [CALCULATED % WATER AND DESLUDGING]  =SUM(WASH__Data[@[CALCULATED % WATER SPEND]:[CALCULATED % Desludging Spend]])
+      
+#     CALCULATED % WATER SPEND =IFERROR(IF(
+      
+#       ([@[W.7.1. How much your HH spent in the past 30 days on purchasing water? (in SYP) (Specify)]]/[@[HH_Average_Monthly_Income]])*100<=100,
+# 
+#       ([@[W.7.1. How much your HH spent in the past 30 days on purchasing water? (in SYP) (Specify)]]/[@[HH_Average_Monthly_Income]])*100,
+      
+#       [@[W.7. What percentage of monthly income is used to buy water?  (Specify)]]),
+# 
+#       [@[W.7. What percentage of monthly income is used to buy water?  (Specify)]])
+#       
+
+      
+      # HH average monthly income is added as 50 until the clear instruction on how to calculate is available
+      PiNSeverityData$HH_average_monthly_Income<- 50
+
+      #CALCULATED % WATER SPEND
+      
+      PiNSeverityData$percent_hh_sepend_water <- ifelse(
+                                                      PiNSeverityData$hh_MoneySpent_purchasing_Water/PiNSeverityData$HH_average_monthly_Income*100<=100,
+                                                      PiNSeverityData$hh_MoneySpent_purchasing_Water/PiNSeverityData$HH_average_monthly_Income*100,
+                                                      PiNSeverityData$Percent_MonthlyIncome_buy_Water
+                                                       )
+        
+
+      # CALCULATED % Desludging Spend=
+# 
+# IFERROR(IF(EC3/3/[@[HH_Average_Monthly_Income]]*100<=100,
+# EC3/3/[@[HH_Average_Monthly_Income]]*100,
+# [@[W.13.2. What percentage of monthly income is used on desludging of septic tank? (asked only if ?Connection to HH septic tank? reported in W.13)]]),
+# [@[W.13.2. What percentage of monthly income is used on desludging of septic tank? (asked only if ?Connection to HH septic tank? reported in W.13)]])
+
+    # EC3= W.13.3. How much your HH spent in the past 3 Months on septic tank desludging? (in SYP)
+      PiNSeverityData$HH_moneySpent_3m_desludging_septic_tank<- RData_Main$W13_3
+      PiNSeverityData$Percent_MonthlyIncome_desludging_septic_tank<- RData_Main$W13_2
+    
+      
+      
+PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
+      
+                                                    PiNSeverityData$HH_moneySpent_3m_desludging_septic_tank/3/PiNSeverityData$HH_average_monthly_Income*100<=100,
+                                                    PiNSeverityData$HH_moneySpent_3m_desludging_septic_tank/3/PiNSeverityData$HH_average_monthly_Income*100,
+                                                    PiNSeverityData$Percent_MonthlyIncome_desludging_septic_tank
+                                                    )
+                                                    
+PiNSeverityData$percent_hh_sepend_Desludging<- ifelse(is.na(PiNSeverityData$percent_hh_sepend_Desludging), 0,PiNSeverityData$percent_hh_sepend_Desludging)      
+PiNSeverityData$percent_hh_sepend_water<- ifelse(is.na(PiNSeverityData$percent_hh_sepend_water),0, PiNSeverityData$percent_hh_sepend_water)
+        
+        
+#     [CALCULATED % WATER AND DESLUDGING]  =SUM(WASH__Data[@[CALCULATED % WATER SPEND]:[CALCULATED % Desludging Spend]])
+        
+    
+    PiNSeverityData$percent_hh_sepend_water_Desludging <- PiNSeverityData$percent_hh_sepend_water+ PiNSeverityData$percent_hh_sepend_Desludging
+    
+    }
+    
+    
+    ## Indicator 1.7 Household handwashing facilities----
+    {
+      #=IF([@[W.17. Can you please show me the place where you usually wash hands? (choose one)]]="Refuse","",
+      #   IF([@[W.17.1 Soap and water at the handwashing facility? (OBSERVATION)]]="both soap and water",1,
+      #       IF([@[W.17.1 Soap and water at the handwashing facility? (OBSERVATION)]]="Soap only",3,4)
+      #       )
+      #    )
+      
+      
+      PiNSeverityData$Indicatorhh_handwashing_facilities_SS<- ifelse(PiNSeverityData$Indicatorhandwashing_w17 =="Refuse","",
+            ifelse(grepl("both soap and water", PiNSeverityData$Indicatorhandwashing_w17_1), 1, 
+                   ifelse(grepl("Soap only", PiNSeverityData$Indicatorhandwashing_w17_1), 3, 4)
+                   
+                   )
+            )
+      
+    }
+    
+    ## Indicator 1.8 Househould receives humanitarian assistance----
+    {
+      
+      #   2.1 % of Households receiving humanitarian assistance		20%	40%	60%	80%
+      
+      TEMPdataframeAssistanceReceived <- PiNSeverityData %>% 
+              group_by(admin3PCode,
+              HHassistancereceived)%>% 
+              summarise(counthhassisted=n())
+      
+     
+     TEMPdataframeAssistanceReceived <- dcast(TEMPdataframeAssistanceReceived, admin3PCode ~ HHassistancereceived, value.var="counthhassisted", fun.aggregate=sum)
+     
+     TEMPdataframeAssistanceReceived$total <- TEMPdataframeAssistanceReceived$`Don?t Know/ Unsure` +
+                                                  TEMPdataframeAssistanceReceived$Yes +
+                                                    TEMPdataframeAssistanceReceived$No
+       
+     TEMPdataframeAssistanceReceived$PercentDKN <- TEMPdataframeAssistanceReceived$`Don?t Know/ Unsure` / TEMPdataframeAssistanceReceived$total
+     TEMPdataframeAssistanceReceived$PercentYes <- TEMPdataframeAssistanceReceived$Yes / TEMPdataframeAssistanceReceived$total                                           
+     TEMPdataframeAssistanceReceived$PercentNo <- TEMPdataframeAssistanceReceived$No / TEMPdataframeAssistanceReceived$total
+     
+     TEMPdataframeAssistanceReceived$Indicatorhh_Received_SS <- ifelse(TEMPdataframeAssistanceReceived$PercentYes >0.8,5, 
+                                                  ifelse(TEMPdataframeAssistanceReceived$PercentYes >0.6,4, 
+                                                         ifelse(TEMPdataframeAssistanceReceived$PercentYes >0.4,3, 
+                                                                ifelse(TEMPdataframeAssistanceReceived$PercentYes >0.2,2,1)))) 
+ 
+# to hide all un-needed columns and add the HHreceivedSS indicator to the PINseverity data frame
+   
+   TEMPdataframeAssistanceReceived = subset(TEMPdataframeAssistanceReceived, select = c(admin3PCode,Indicatorhh_Received_SS))
+   PiNSeverityData<- merge(PiNSeverityData, TEMPdataframeAssistanceReceived, by="admin3PCode")
+     
+    }
+    
+    
+    
   }
   
 
