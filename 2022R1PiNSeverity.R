@@ -7,7 +7,7 @@
   options(java.parameters = "-Xmx2048m")
   library(xlsx) #detach("package:xlsx", unload=TRUE)
   library(dplyr)
-  library(pivottabler)
+  #library(pivottabler)
   library(reshape2)
 
 # Data loading ----
@@ -40,6 +40,9 @@
 {
   SN = c(1:nrow(RData_Main))
   PiNSeverityData <- as.data.frame(SN)
+  
+  # Weight of HH 
+  PiNSeverityData$Weight <- 1
   
   #hh.uuid
   #Note: need to be inlined with HNAP coding system, to enforce unique identifier for the HH records
@@ -244,7 +247,7 @@
   ## indicators for severity scoring -----
   {
 
-      ### Indicator 1.1 FRC ----
+    ### Indicator 1.1 FRC ----
     {
       #Function Logic
       # if no data reported make it blank - no severity score assigned
@@ -293,7 +296,7 @@
       #      [@[W1. What water source did your household use the most in the last 30 days?]]="River/Lake"),5,4))))
     }
     
-      ## Indicator 1.2 Water Sufficiency ----
+    ## Indicator 1.2 Water Sufficiency ----
     {
       
   #"" =IF([@[W.6. Did you have enough water in the last 30 days to meet your household needs?]]="Yes",1,
@@ -313,7 +316,6 @@
                                                                  PiNSeverityData$IndicatorWaterSufficiency_w6_1.6, na.rm=TRUE)>0, 4, 3)))
       
        }
-    
       
     ## Indicator 1.3 Hygiene Access ----
     {
@@ -344,8 +346,7 @@
     
     }
     
-      ## Indicator 1.4 Solid Waste ----
-    
+    ## Indicator 1.4 Solid Waste ----
     {
       # IF
       # (
@@ -379,7 +380,8 @@
 
       
     }
-      ## Indicator 1.5 Sanitation Problems----
+    
+    ## Indicator 1.5 Sanitation Problems----
     {
       
     # IF([@['#:]]>20,"",
@@ -418,12 +420,8 @@ PiNSeverityData$IndicatorSanitation_Problems_SS <- ifelse (PiNSeverityData$hhsiz
       
     }
     
-    
-    
-    
-    
-      ## Indicator 1.6 % Spend water and desludging----
-    
+
+    ## Indicator 1.6 % Spend water and desludging----
     {
       #Indicators and Thresholds '!$F$20 = 15
       #Indicators and Thresholds '!$E$20 = 10
@@ -495,7 +493,6 @@ PiNSeverityData$percent_hh_sepend_water<- ifelse(is.na(PiNSeverityData$percent_h
     
     }
     
-    
     ## Indicator 1.7 Household handwashing facilities----
     {
       #=IF([@[W.17. Can you please show me the place where you usually wash hands? (choose one)]]="Refuse","",
@@ -548,14 +545,36 @@ PiNSeverityData$percent_hh_sepend_water<- ifelse(is.na(PiNSeverityData$percent_h
     }
     
     
-    
   }
   
 
 
 # Summarizing at Sub District level ----
-
-W2.Network
+{
+ 
+  
+  tempSDSeverity <- PiNSeverityData %>% 
+    group_by(admin3PCode,
+             IndicatorFRC_SS) %>% 
+    summarise(FRCSS = sum(Weight,na.rm = TRUE))
+  
+  tempSDSeverity <- dcast(tempSDSeverity,admin3PCode ~ tempSDSeverity$IndicatorFRC_SS, value.var="FRCSS", fun.aggregate=sum )
+  
+  #+tempSDSeverity$`2` [We need to handle the situation when one severity is not existant]
+  
+  tempSDSeverity$total <- tempSDSeverity$`1`+tempSDSeverity$`3`+tempSDSeverity$`4`+ tempSDSeverity$`5`+ tempSDSeverity$Var.2
+  
+  tempSDSeverity$SS1 <- tempSDSeverity$`1`/tempSDSeverity$total
+  tempSDSeverity$SS2 <- tempSDSeverity$`Var.2`/tempSDSeverity$total
+  tempSDSeverity$SS3 <- tempSDSeverity$`3`/tempSDSeverity$total
+  tempSDSeverity$SS4 <- tempSDSeverity$`4`/tempSDSeverity$total
+  tempSDSeverity$SS5 <- tempSDSeverity$`5`/tempSDSeverity$total
+  
+  #=IF(F21>0.1,"",IF(GETPIVOTDATA("hh.weights",$A$2,"A.9 Sub- District","SY010000","Indicator 1.1 FRC","")>0.1,"",IF(E21>=0.25,5,IF(SUM(D21:E21)>=0.25,4,IF(SUM(C21:E21)>=0.25,3,1)))))
+  
+  #rm(tempSDSeverity)
+  
+  W2.Network
 W2.Water_trucking
 W2.Closed_well_network
 W2.Closed_well_indivisual
@@ -567,3 +586,6 @@ W2.O
 W2_OtWer 
 
 write.csv(PiNSeverityData,"C:\\Users\\udaraz\\OneDrive - UNICEF\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\Working_Folder_Data\\test1.csv")
+
+}
+
