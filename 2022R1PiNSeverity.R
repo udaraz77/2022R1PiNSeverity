@@ -14,12 +14,12 @@
 {
    
   #Umar Computer
-  filepath <- "C:\\Users\\udaraz\\OneDrive - UNICEF\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
+ # filepath <- "C:\\Users\\udaraz\\OneDrive - UNICEF\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
   
   #rami Computer
   #Data Source : WASH_WoS_Sector_HNOs\HNO-2023\Round-1\Exceltool
   
-  #filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
+filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
   
   
   RData_Main <- read.csv(paste(filepath,"WASH_HH_Survey_Dataset_Feb_2022_Main.csv",sep=""),encoding = "UTF-8")
@@ -551,12 +551,29 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
 
 # Summarizing at Sub District level ----
 {
+
+  
+  #PiNSeverityData$IndicatorFRC_SS[PiNSeverityData$IndicatorFRC_SS==4]  <- 0 
+  
+  aunique<- unique(PiNSeverityData$IndicatorFRC_SS)
+  Missing_ss <- c("","","","","")
+ 
+    for(i in 1:5){
+        if(length(grep(as.character(i), aunique,ignore.case = TRUE)) == 0){
+          Missing_ss[i] <- c(i)
+        }
+      }
+  
+
+    
+ 
+  
  
   
   tempSDSeverity <- PiNSeverityData %>% 
-    group_by(admin3PCode,
-             IndicatorFRC_SS) %>% 
-    summarise(FRCSS = sum(Weight,na.rm = TRUE))
+            group_by(admin3PCode,
+            IndicatorFRC_SS) %>% 
+  summarise(FRCSS = sum(Weight,na.rm = TRUE))
   
   tempSDSeverity <- dcast(tempSDSeverity,admin3PCode ~ tempSDSeverity$IndicatorFRC_SS, value.var="FRCSS", fun.aggregate=sum )
   
@@ -565,14 +582,33 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
   tempSDSeverity$total <- tempSDSeverity$`1`+tempSDSeverity$`3`+tempSDSeverity$`4`+ tempSDSeverity$`5`+ tempSDSeverity$Var.2
   
   tempSDSeverity$SS1 <- tempSDSeverity$`1`/tempSDSeverity$total
-  tempSDSeverity$SS2 <- tempSDSeverity$`Var.2`/tempSDSeverity$total
-  tempSDSeverity$SS3 <- tempSDSeverity$`3`/tempSDSeverity$total
-  tempSDSeverity$SS4 <- tempSDSeverity$`4`/tempSDSeverity$total
-  tempSDSeverity$SS5 <- tempSDSeverity$`5`/tempSDSeverity$total
   
-  #=IF(F21>0.1,"",IF(GETPIVOTDATA("hh.weights",$A$2,"A.9 Sub- District","SY010000","Indicator 1.1 FRC","")>0.1,"",IF(E21>=0.25,5,IF(SUM(D21:E21)>=0.25,4,IF(SUM(C21:E21)>=0.25,3,1)))))
+  tempSDSeverity$SS1 <- if(Missing_ss[1]== "1"){ 0 } else {tempSDSeverity$`1`/tempSDSeverity$total}
+  tempSDSeverity$SS2 <- if(Missing_ss[2]== "2"){ 0 } else {tempSDSeverity$`2`/tempSDSeverity$total}
+  tempSDSeverity$SS3 <- if(Missing_ss[3]== "3"){ 0 } else {tempSDSeverity$`3`/tempSDSeverity$total}
+  tempSDSeverity$SS4 <- if(Missing_ss[4]== "4"){ 0 } else {tempSDSeverity$`4`/tempSDSeverity$total}
+  tempSDSeverity$SS5 <- if(Missing_ss[5]== "5"){ 0 } else {tempSDSeverity$`5`/tempSDSeverity$total}
+  tempSDSeverity$SST <- tempSDSeverity$SS1 + tempSDSeverity$SS2 + tempSDSeverity$SS3 + tempSDSeverity$SS4 + tempSDSeverity$SS5
   
-  #rm(tempSDSeverity)
+  
+  #=IF(F21>0.1,"",IF(GETPIVOTDATA("hh.weights",$A$2,"A.9 Sub- District","SY010000","Indicator 1.1 FRC","")>0.1,""
+  # ,IF(E21>=0.25,5,
+  #  IF(SUM(D21:E21)>=0.25,4,
+  #  IF(SUM(C21:E21)>=0.25,3,1)))))
+  
+  tempSDSeverity$SSSD1.1 <- ifelse(tempSDSeverity$SS5> 0.25, 5,
+    ifelse(tempSDSeverity$SS5+tempSDSeverity$SS4> 0.25, 4,
+           ifelse(tempSDSeverity$SS5+tempSDSeverity$SS4+tempSDSeverity$SS3> 0.25, 3,
+                  ifelse(tempSDSeverity$SS5+tempSDSeverity$SS4+tempSDSeverity$SS3+tempSDSeverity$SS2>0.25, 2,
+                         ifelse(tempSDSeverity$SS5+tempSDSeverity$SS4+tempSDSeverity$SS3+tempSDSeverity$SS2+tempSDSeverity$SS1>0.25, 1,1
+                         )))))
+    
+  #tempSDSeveritySSD1.1 = subset(tempSDSeverity, select = c(admin3PCode,SSSD1.1))
+  
+  
+  
+  
+
   
   W2.Network
 W2.Water_trucking
