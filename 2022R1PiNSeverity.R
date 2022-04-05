@@ -484,12 +484,12 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
                                                     PiNSeverityData$Percent_MonthlyIncome_desludging_septic_tank
                                                     )
                                                     
-PiNSeverityData$percent_hh_sepend_Desludging<- ifelse(is.na(PiNSeverityData$percent_hh_sepend_Desludging), 0,PiNSeverityData$percent_hh_sepend_Desludging)      
-PiNSeverityData$percent_hh_sepend_water<- ifelse(is.na(PiNSeverityData$percent_hh_sepend_water),0, PiNSeverityData$percent_hh_sepend_water)
+#PiNSeverityData$percent_hh_sepend_Desludging<- ifelse(is.na(PiNSeverityData$percent_hh_sepend_Desludging), 0,PiNSeverityData$percent_hh_sepend_Desludging)      
+#PiNSeverityData$percent_hh_sepend_water<- ifelse(is.na(PiNSeverityData$percent_hh_sepend_water),0, PiNSeverityData$percent_hh_sepend_water)
         
         
 #     [CALCULATED % WATER AND DESLUDGING]  =SUM(WASH__Data[@[CALCULATED % WATER SPEND]:[CALCULATED % Desludging Spend]])
-        
+      #UMAR to check  
     
     PiNSeverityData$percent_hh_sepend_water_Desludging <- PiNSeverityData$percent_hh_sepend_water+ PiNSeverityData$percent_hh_sepend_Desludging
     
