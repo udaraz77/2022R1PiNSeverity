@@ -125,50 +125,48 @@ filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HN
   #W.18. Can I have a glass of water to drink? (Request household for glass of water to drink, perform test and mark following. 1 Test / Household) Please mark one value
   PiNSeverityData$IndicatorFRC <- RData_Main$W18
   
- # W.6. Did you have enough water in the last 30 days to meet your household needs?
+ # W.6. Did you have enough water in the last 30 days to meet your household needs? YES OR NO
   PiNSeverityData$IndicatorWaterSufficiency<- RData_Main$W6
   
-  
-  #   W6_1.1 Reduce drinking water consumption
-  PiNSeverityData$IndicatorWaterSufficiency_w6_1.1<- RData_Main$W6_1.1
-  
-    # W6_1.2 Spend money usually spent on other things to buy water
-  PiNSeverityData$IndicatorWaterSufficiency_w6_1.2<- RData_Main$W6_1.2
-  # W6_1.3 Modify hygiene practices bath less etc.
-  PiNSeverityData$IndicatorWaterSufficiency_w6_1.3<- RData_Main$W6_1.3
-  # W6_1.4 Receive water on credit borrow water or money for water
-  PiNSeverityData$IndicatorWaterSufficiency_w6_1.4<- RData_Main$W6_1.4
-  # W6_1.5 Drink water usually used for cleaning or purposes other than drinking
-  PiNSeverityData$IndicatorWaterSufficiency_w6_1.5<- RData_Main$W6_1.5
-  # W6_1.6 Not being able to wash hands with sufficient frequency
-  PiNSeverityData$IndicatorWaterSufficiency_w6_1.6<- RData_Main$W6_1.6
-  # W6_1.66 Other
-  PiNSeverityData$IndicatorWaterSufficiency_w6_1.66<- RData_Main$W6_1.66
-  
-  # W9 Hygiene Access - ALL
-  PiNSeverityData$IndicatorHygiene_Access_w9.All<- RData_Main$w9.All
-  
-  PiNSeverityData$IndicatorHygiene_Access_w9.2<- RData_Main$w9.2
-  #W.9. Soap bar- 9.2
-  PiNSeverityData$IndicatorHygiene_Access_w9.2<- RData_Main$w9.2
-  #W.9. Sanitary pads 1 pack of 9 - 9.1
-  PiNSeverityData$IndicatorHygiene_Access_w9.1<- RData_Main$w9.1
-  #W.9. Jerry can bucket - 9.3
-  PiNSeverityData$IndicatorHygiene_Access_w9.3<- RData_Main$w9.3
-  #W.9. Washing powder 1kg - 9.7
-  PiNSeverityData$IndicatorHygiene_Access_w9.7<- RData_Main$w9.7
-  #W.9. Shampobabies - 9.5
-  PiNSeverityData$IndicatorHygiene_Access_w9.5<- RData_Main$w9.5
-  #W.9. Disposable diapers 1 pack of 24 - 9.6
-  PiNSeverityData$IndicatorHygiene_Access_w9.6<- RData_Main$w9.6
-  #W.9. Toothbrush child - -9.10
-  PiNSeverityData$IndicatorHygiene_Access_w9.10<- RData_Main$w9.10
-  #W.9. Toothpaste child-9.11
-  PiNSeverityData$IndicatorHygiene_Access_w9.11<- RData_Main$w9.11
-  #W.9. Hand Sanitizer- 9.19
-  PiNSeverityData$IndicatorHygiene_Access_w9.19<- RData_Main$w9.19
+  #W.6.1. If no, How did you adjust for the lack of water? (choose all apply)
+  PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water<- RData_Main$W6_1
   
   
+# 1 -Reduce drinking water consumption
+# 2- Spend money usually spent on other things to buy water
+# 3- Modify hygiene practices bath less etc.
+# 4-Receive water on credit borrow water or money for water
+# 5-Drink water usually used for cleaning or purposes other than drinking
+# 6-Not being able to wash hands with sufficient frequency
+# 66-Other
+#   
+  PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water <- gsub("1", "Reduce drinking water consumption", PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water)
+  PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water <- gsub("2", "Spend money usually spent on other things to buy water", PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water)
+  PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water <- gsub("3", "Modify hygiene practices bath less etc.", PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water)
+  PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water <- gsub("4", "Receive water on credit borrow water or money for water", PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water)
+  PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water <- gsub("5", "Drink water usually used for cleaning or purposes other than drinking", PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water)
+  PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water <- gsub("6", "Not being able to wash hands with sufficient frequency", PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water)
+  PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water <- gsub("66", "Other", PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water)
+  
+
+  
+  #W.9. Was there one / multiple hygiene item your HH needed to procure in the last 30 days but could not access? (choose all apply) It needs to be asked in the way that stress on what HHs NEEDED but couldn?t access Probably better NOT to read a full list of items to HH but rather mark down what HH couldn?t access
+  PiNSeverityData$IndicatorHygiene_Access<- RData_Main$w9
+  PiNSeverityData$IndicatorHygiene_Access <- gsub("19", "Hand Sanitizer", PiNSeverityData$IndicatorHygiene_Access)
+  PiNSeverityData$IndicatorHygiene_Access <- gsub("11", "Toothpaste child", PiNSeverityData$IndicatorHygiene_Access)
+  PiNSeverityData$IndicatorHygiene_Access <- gsub("10", "Toothbrush child", PiNSeverityData$IndicatorHygiene_Access)
+  PiNSeverityData$IndicatorHygiene_Access <- gsub("1", "Sanitary pads", PiNSeverityData$IndicatorHygiene_Access)
+  PiNSeverityData$IndicatorHygiene_Access <- gsub("2", "Soap bar", PiNSeverityData$IndicatorHygiene_Access)
+  PiNSeverityData$IndicatorHygiene_Access <- gsub("3", "Jerry can bucket", PiNSeverityData$IndicatorHygiene_Access)
+  PiNSeverityData$IndicatorHygiene_Access <- gsub("5", "Shampobabies", PiNSeverityData$IndicatorHygiene_Access)
+  PiNSeverityData$IndicatorHygiene_Access <- gsub("6", "Babies disposable diapers", PiNSeverityData$IndicatorHygiene_Access)
+  PiNSeverityData$IndicatorHygiene_Access <- gsub("7", "Washing powder", PiNSeverityData$IndicatorHygiene_Access)
+  PiNSeverityData$IndicatorHygiene_Access <- gsub("9", "Toothpaste adults", PiNSeverityData$IndicatorHygiene_Access)
+  
+  
+  
+  
+
   #W.10. What is the way you disposed of garbage in the last 30 days? (choose all apply)
 
   PiNSeverityData$IndicatorSolidWaste_w10<- RData_Main$W10
@@ -309,12 +307,14 @@ filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HN
   #[@[W.6.1. If no, How did you adjust for the lack of water? (choose all apply)/Not being able to wash hands with sufficient frequency]])>0,4,3)))
       
 
-      PiNSeverityData$IndicatorWaterSufficiency_SS <- ifelse(PiNSeverityData$IndicatorWaterSufficiency =="Yes",1,
-                                                      ifelse(sum(PiNSeverityData$IndicatorWaterSufficiency_w6_1.1,
-                                                                 PiNSeverityData$IndicatorWaterSufficiency_w6_1.5, na.rm=TRUE)>0, 5,
-                                                      ifelse(sum(PiNSeverityData$IndicatorWaterSufficiency_w6_1.3,
-                                                                 PiNSeverityData$IndicatorWaterSufficiency_w6_1.6, na.rm=TRUE)>0, 4, 3)))
-      
+  PiNSeverityData$IndicatorWaterSufficiency_SS <- ifelse(PiNSeverityData$IndicatorWaterSufficiency =="Yes",1,
+                                                           ifelse(grepl("Reduce drinking water consumption", PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water) |
+                                                                  grepl("Drink water usually used for cleaning or purposes other than drinking", PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water), 5, 
+                                                                      ifelse(grepl("Modify hygiene practices bath less etc.", PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water) | 
+                                                                      grepl("Not being able to wash hands with sufficient frequency", PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water)
+                                                                     , 4, 3)))
+                                         
+                                                             
        }
       
     ## Indicator 1.3 Hygiene Access ----
@@ -333,18 +333,22 @@ filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HN
       #[@[W.9. Hand Sanitizer]])>0,3
       #,2)))
       
-      PiNSeverityData$IndicatorHygiene_Access_SS <- ifelse(PiNSeverityData$IndicatorHygiene_Access_w9.All =="1",1,
-                                                           ifelse(PiNSeverityData$IndicatorHygiene_Access_w9.2 ==1,5,
-                                                                  ifelse(sum(PiNSeverityData$IndicatorHygiene_Access_w9.1,
-                                                                             PiNSeverityData$IndicatorHygiene_Access_w9.3,
-                                                                             PiNSeverityData$IndicatorHygiene_Access_w9.7,
-                                                                             PiNSeverityData$IndicatorHygiene_Access_w9.5,
-                                                                             PiNSeverityData$IndicatorHygiene_Access_w9.6,
-                                                                             PiNSeverityData$IndicatorHygiene_Access_w9.10,
-                                                                             PiNSeverityData$IndicatorHygiene_Access_w9.11,
-                                                                             PiNSeverityData$IndicatorHygiene_Access_w9.19, na.rm=TRUE)>0, 3, 2)))
-    
-    }
+      
+      
+      
+      PiNSeverityData$IndicatorHygiene_Access_SS <- ifelse(PiNSeverityData$IndicatorHygiene_Access =="All",1,
+                                                           ifelse(grepl("Soap bar", PiNSeverityData$IndicatorHygiene_Access), 5, 
+                                                                  ifelse(  grepl("Sanitary pads", PiNSeverityData$IndicatorHygiene_Access) |
+                                                                           grepl("Jerry can bucket", PiNSeverityData$IndicatorHygiene_Access) |
+                                                                           grepl("Washing powder", PiNSeverityData$IndicatorHygiene_Access) |
+                                                                           grepl("Shampobabies", PiNSeverityData$IndicatorHygiene_Access) |
+                                                                           grepl("Babies disposable diapers", PiNSeverityData$IndicatorHygiene_Access) |
+                                                                           grepl("Toothbrush child", PiNSeverityData$IndicatorHygiene_Access) |
+                                                                           grepl("Toothpaste child", PiNSeverityData$IndicatorHygiene_Access)|
+                                                                           grepl("Hand Sanitizer", PiNSeverityData$IndicatorHygiene_Access), 3, 3)))
+      
+      
+      
     
     ## Indicator 1.4 Solid Waste ----
     {
@@ -546,16 +550,23 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
     
     
   }
+
+
   
-
-
-# Summarizing at Sub District level ----
+## Summarizing at Sub District level -----
 {
+  
+  ### Indicator 1.1 - Water safety IndicatorFRC_SS----
+  {
+
 
   
-  #PiNSeverityData$IndicatorFRC_SS[PiNSeverityData$IndicatorFRC_SS==4]  <- 0 
+#  PiNSeverityData$IndicatorFRC_SS[PiNSeverityData$IndicatorFRC_SS=="5"]  <- "2"
+  
   
   aunique<- unique(PiNSeverityData$IndicatorFRC_SS)
+  #check if SS 1, 2, 3, 4, 5 are all exist
+  
   Missing_ss <- c("","","","","")
  
     for(i in 1:5){
@@ -565,11 +576,6 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
       }
   
 
-    
- 
-  
- 
-  
   tempSDSeverity <- PiNSeverityData %>% 
             group_by(admin3PCode,
             IndicatorFRC_SS) %>% 
@@ -577,12 +583,18 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
   
   tempSDSeverity <- dcast(tempSDSeverity,admin3PCode ~ tempSDSeverity$IndicatorFRC_SS, value.var="FRCSS", fun.aggregate=sum )
   
-  #+tempSDSeverity$`2` [We need to handle the situation when one severity is not existant]
+  for(i in 1:5)
+  {
+    if(Missing_ss[i] ==  1)  { tempSDSeverity$"1" <- 0  }
+    if(Missing_ss[i] ==  2)  { tempSDSeverity$"2" <- 0  }
+    if(Missing_ss[i] ==  3)  { tempSDSeverity$"3" <- 0  }
+    if(Missing_ss[i] ==  4)  { tempSDSeverity$"4" <- 0  }
+    if(Missing_ss[i] ==  5)  { tempSDSeverity$"5" <- 0  }
+  }
   
-  tempSDSeverity$total <- tempSDSeverity$`1`+tempSDSeverity$`3`+tempSDSeverity$`4`+ tempSDSeverity$`5`+ tempSDSeverity$Var.2
+  tempSDSeverity$total <- tempSDSeverity$`1`+tempSDSeverity$`3`+tempSDSeverity$`4`+ tempSDSeverity$`5`+ tempSDSeverity$`2`
   
   tempSDSeverity$SS1 <- tempSDSeverity$`1`/tempSDSeverity$total
-  
   tempSDSeverity$SS1 <- if(Missing_ss[1]== "1"){ 0 } else {tempSDSeverity$`1`/tempSDSeverity$total}
   tempSDSeverity$SS2 <- if(Missing_ss[2]== "2"){ 0 } else {tempSDSeverity$`2`/tempSDSeverity$total}
   tempSDSeverity$SS3 <- if(Missing_ss[3]== "3"){ 0 } else {tempSDSeverity$`3`/tempSDSeverity$total}
@@ -606,9 +618,140 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
   #tempSDSeveritySSD1.1 = subset(tempSDSeverity, select = c(admin3PCode,SSSD1.1))
   
   
+                }
+    
+   ## Indicator 1.2 - Water Sufficiency ----
+  {#PiNSeverityData$IndicatorWaterSufficiency_SS
+    
+    aunique<- unique(PiNSeverityData$IndicatorWaterSufficiency_SS)
+    #check if SS 1, 2, 3, 4, 5 are all exist
+    
+    Missing_ss <- c("","","","","")
+    
+    for(i in 1:5){
+      if(length(grep(as.character(i), aunique,ignore.case = TRUE)) == 0){
+        Missing_ss[i] <- c(i)
+      }
+    }
+    
+    
+    
+    tempSDSeverity2 <- PiNSeverityData %>% 
+      group_by(admin3PCode,
+               IndicatorWaterSufficiency_SS) %>% 
+      summarise(WaterSufficiency = sum(Weight,na.rm = TRUE))
+    
+    tempSDSeverity2 <- dcast(tempSDSeverity2,admin3PCode ~ tempSDSeverity2$IndicatorWaterSufficiency_SS, value.var="IndicatorWaterSufficiency_SS", fun.aggregate=sum )
+    
+    
+    for(i in 1:5)
+      {
+      if(Missing_ss[i] ==  1)  { tempSDSeverity2$"i" <- 0  }
+      if(Missing_ss[i] ==  2)  { tempSDSeverity2$"2" <- 0  }
+      if(Missing_ss[i] ==  3)  { tempSDSeverity2$"3" <- 0  }
+      if(Missing_ss[i] ==  4)  { tempSDSeverity2$"4" <- 0  }
+      if(Missing_ss[i] ==  5)  { tempSDSeverity2$"5" <- 0  }
+    }
+    
+    
+ 
+    tempSDSeverity2$total <- tempSDSeverity2$`1`+tempSDSeverity2$`3`+tempSDSeverity2$`4`+ tempSDSeverity2$`5`+tempSDSeverity2$`2`
+    tempSDSeverity2$SS1 <- tempSDSeverity$`1`/tempSDSeverity$total
+    tempSDSeverity2$SS1 <- if(Missing_ss[1]== "1"){ 0 } else {tempSDSeverity2$`1`/tempSDSeverity2$total}
+    tempSDSeverity2$SS2 <- if(Missing_ss[2]== "2"){ 0 } else {tempSDSeverity2$`2`/tempSDSeverity2$total}
+    tempSDSeverity2$SS3 <- if(Missing_ss[3]== "3"){ 0 } else {tempSDSeverity2$`3`/tempSDSeverity2$total}
+    tempSDSeverity2$SS4 <- if(Missing_ss[4]== "4"){ 0 } else {tempSDSeverity2$`4`/tempSDSeverity2$total}
+    tempSDSeverity2$SS5 <- if(Missing_ss[5]== "5"){ 0 } else {tempSDSeverity2$`5`/tempSDSeverity2$total}
+    tempSDSeverity2$SST <- tempSDSeverity2$SS1 + tempSDSeverity2$SS2 + tempSDSeverity2$SS3 + tempSDSeverity2$SS4 + tempSDSeverity2$SS5
+    
+    
+    #IF(N4>=0.25,5,IF(SUM(M4:N4)>=0.25,4,IF(SUM(L4:N4)>=0.25,3,1)))
+    
+    
+    tempSDSeverity2$SSSD1.2 <- ifelse(tempSDSeverity2$SS5> 0.25, 5,
+                                      ifelse(tempSDSeverity2$SS5+tempSDSeverity2$SS4> 0.25, 4,
+                                             ifelse(tempSDSeverity2$SS5+tempSDSeverity2$SS4+tempSDSeverity2$SS3> 0.25, 3,
+                                                    ifelse(tempSDSeverity2$SS5+tempSDSeverity2$SS4+tempSDSeverity2$SS3+tempSDSeverity2$SS2>0.25, 2,
+                                                           ifelse(tempSDSeverity2$SS5+tempSDSeverity2$SS4+tempSDSeverity2$SS3+tempSDSeverity2$SS2+tempSDSeverity2$SS1>0.25, 1,1
+                                                           )))))
+    
+  }
   
   
-
+     ##Indicator 1.3 - Hygiene items ----
+  {
+    
+    
+    aunique<- unique(PiNSeverityData$IndicatorHygiene_Access_SS)
+    #check if SS 1, 2, 3, 4, 5 are all exist
+    
+    Missing_ss <- c("","","","","")
+    
+    for(i in 1:5){
+      if(length(grep(as.character(i), aunique,ignore.case = TRUE)) == 0){
+        Missing_ss[i] <- c(i)
+      }
+    }
+    
+    
+    
+    tempSDSeverity2 <- PiNSeverityData %>% 
+      group_by(admin3PCode,
+               IndicatorWaterSufficiency_SS) %>% 
+      summarise(WaterSufficiency = sum(Weight,na.rm = TRUE))
+    
+    tempSDSeverity2 <- dcast(tempSDSeverity2,admin3PCode ~ tempSDSeverity2$IndicatorWaterSufficiency_SS, value.var="IndicatorWaterSufficiency_SS", fun.aggregate=sum )
+    
+    
+    for(i in 1:5)
+    {
+      if(Missing_ss[i] ==  1)  { tempSDSeverity2$"i" <- 0  }
+      if(Missing_ss[i] ==  2)  { tempSDSeverity2$"2" <- 0  }
+      if(Missing_ss[i] ==  3)  { tempSDSeverity2$"3" <- 0  }
+      if(Missing_ss[i] ==  4)  { tempSDSeverity2$"4" <- 0  }
+      if(Missing_ss[i] ==  5)  { tempSDSeverity2$"5" <- 0  }
+    }
+    
+    
+    
+    tempSDSeverity2$total <- tempSDSeverity2$`1`+tempSDSeverity2$`3`+tempSDSeverity2$`4`+ tempSDSeverity2$`5`+tempSDSeverity2$`2`
+    tempSDSeverity2$SS1 <- tempSDSeverity$`1`/tempSDSeverity$total
+    tempSDSeverity2$SS1 <- if(Missing_ss[1]== "1"){ 0 } else {tempSDSeverity2$`1`/tempSDSeverity2$total}
+    tempSDSeverity2$SS2 <- if(Missing_ss[2]== "2"){ 0 } else {tempSDSeverity2$`2`/tempSDSeverity2$total}
+    tempSDSeverity2$SS3 <- if(Missing_ss[3]== "3"){ 0 } else {tempSDSeverity2$`3`/tempSDSeverity2$total}
+    tempSDSeverity2$SS4 <- if(Missing_ss[4]== "4"){ 0 } else {tempSDSeverity2$`4`/tempSDSeverity2$total}
+    tempSDSeverity2$SS5 <- if(Missing_ss[5]== "5"){ 0 } else {tempSDSeverity2$`5`/tempSDSeverity2$total}
+    tempSDSeverity2$SST <- tempSDSeverity2$SS1 + tempSDSeverity2$SS2 + tempSDSeverity2$SS3 + tempSDSeverity2$SS4 + tempSDSeverity2$SS5
+    
+    
+    #IF(N4>=0.25,5,IF(SUM(M4:N4)>=0.25,4,IF(SUM(L4:N4)>=0.25,3,1)))
+    
+    
+    tempSDSeverity2$SSSD1.2 <- ifelse(tempSDSeverity2$SS5> 0.25, 5,
+                                      ifelse(tempSDSeverity2$SS5+tempSDSeverity2$SS4> 0.25, 4,
+                                             ifelse(tempSDSeverity2$SS5+tempSDSeverity2$SS4+tempSDSeverity2$SS3> 0.25, 3,
+                                                    ifelse(tempSDSeverity2$SS5+tempSDSeverity2$SS4+tempSDSeverity2$SS3+tempSDSeverity2$SS2>0.25, 2,
+                                                           ifelse(tempSDSeverity2$SS5+tempSDSeverity2$SS4+tempSDSeverity2$SS3+tempSDSeverity2$SS2+tempSDSeverity2$SS1>0.25, 1,1
+                                                           )))))
+    
+    
+    
+    
+    
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  }
+  
+  
   
   W2.Network
 W2.Water_trucking
