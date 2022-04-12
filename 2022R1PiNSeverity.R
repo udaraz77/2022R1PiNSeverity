@@ -633,9 +633,8 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
                          ifelse(tempSDSeverity1.1$SS5+tempSDSeverity1.1$SS4+tempSDSeverity1.1$SS3+tempSDSeverity1.1$SS2+tempSDSeverity1.1$SS1>0.25, 1,1
                          )))))
     
-  #tempSDSeverity1.1SSD1.1 = subset(tempSDSeverity1.1, select = c(admin3PCode,SSSD1.1))
   
-  
+
                 }
     
    ## Indicator 1.2 - Water Sufficiency ----
@@ -674,7 +673,7 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
     
  
     tempSDSeverity1.2$total <- tempSDSeverity1.2$`1`+tempSDSeverity1.2$`3`+tempSDSeverity1.2$`4`+ tempSDSeverity1.2$`5`+tempSDSeverity1.2$`2`
-    tempSDSeverity1.2$SS1 <- tempSDSeverity$`1`/tempSDSeverity$total
+    tempSDSeverity1.2$SS1 <- tempSDSeverity1.2$`1`/tempSDSeverity1.2$total
     tempSDSeverity1.2$SS1 <- if(Missing_ss[1]== "1"){ 0 } else {tempSDSeverity1.2$`1`/tempSDSeverity1.2$total}
     tempSDSeverity1.2$SS2 <- if(Missing_ss[2]== "2"){ 0 } else {tempSDSeverity1.2$`2`/tempSDSeverity1.2$total}
     tempSDSeverity1.2$SS3 <- if(Missing_ss[3]== "3"){ 0 } else {tempSDSeverity1.2$`3`/tempSDSeverity1.2$total}
@@ -739,7 +738,7 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
                                       ifelse(tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4> 0.25, 4,
                                              ifelse(tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4+tempSDSeverity1.3$SS3> 0.25, 3,
                                                     ifelse(tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4+tempSDSeverity1.3$SS3+tempSDSeverity1.3$SS2>0.25, 2,
-                                                           ifelse(tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4+tempSDSeverity3$SS3+tempSDSeverity1.3$SS2+tempSDSeverity1.3$SS1>0.25, 1,1
+                                                           ifelse(tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4+tempSDSeverity1.3$SS3+tempSDSeverity1.3$SS2+tempSDSeverity1.3$SS1>0.25, 1,1
                                                            )))))
     
   }
@@ -957,12 +956,48 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
   
   
   
-  
+
   
   
   }
   
-  
+    ## Summarizing SS at Sub District level -----
+    
+    {
+      
+      PiNSeverityDataSS <- PiNSeverityData %>% 
+        group_by(admin3PCode) %>% 
+        summarise(sumUUID = sum(Weight,na.rm = TRUE))
+      
+    tempSDSeverity1.1 = subset(tempSDSeverity1.1, select = c(admin3PCode,SSSD1.1))
+    
+    
+    PiNSeverityDataSS<- merge(PiNSeverityDataSS, tempSDSeverity1.1, by="admin3PCode")
+    
+    
+    tempSDSeverity1.2 = subset(tempSDSeverity1.2, select = c(admin3PCode,SSSD1.2))
+    PiNSeverityDataSS<- merge(PiNSeverityDataSS, tempSDSeverity1.2, by="admin3PCode")
+    
+    tempSDSeverity1.3 = subset(tempSDSeverity1.3, select = c(admin3PCode,SSSD1.3))
+    PiNSeverityDataSS<- merge(PiNSeverityDataSS, tempSDSeverity1.3, by="admin3PCode")
+    
+    tempSDSeverity1.4 = subset(tempSDSeverity1.4, select = c(admin3PCode,SSSD1.4))
+    PiNSeverityDataSS<- merge(PiNSeverityDataSS, tempSDSeverity1.4, by="admin3PCode")
+    
+    tempSDSeverity1.5 = subset(tempSDSeverity1.5, select = c(admin3PCode,SSSD1.5))
+    PiNSeverityDataSS<- merge(PiNSeverityDataSS, tempSDSeverity1.5, by="admin3PCode")
+    
+    tempSDSeverity1.6 = subset(tempSDSeverity1.6, select = c(admin3PCode,SSSD1.6))
+    PiNSeverityDataSS<- merge(PiNSeverityDataSS, tempSDSeverity1.6, by="admin3PCode")
+    
+    
+    tempSDSeverity1.7 = subset(tempSDSeverity1.7, select = c(admin3PCode,SSSD1.7))
+    PiNSeverityDataSS<- merge(PiNSeverityDataSS, tempSDSeverity1.7, by="admin3PCode")
+    
+    
+    }
+    
+    
   
   W2.Network
 W2.Water_trucking
