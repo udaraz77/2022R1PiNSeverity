@@ -42,7 +42,7 @@ filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HN
   PiNSeverityData <- as.data.frame(SN)
   
   # Weight of HH 
-  PiNSeverityData$Weight <- 1
+  PiNSeverityData$Weight <- RData_Main$hh_weights
   
   #hh.uuid
   #Note: need to be inlined with HNAP coding system, to enforce unique identifier for the HH records
@@ -633,7 +633,7 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
                          ifelse(tempSDSeverity1.1$SS5+tempSDSeverity1.1$SS4+tempSDSeverity1.1$SS3+tempSDSeverity1.1$SS2+tempSDSeverity1.1$SS1>0.25, 1,1
                          )))))
     
-  
+  tempSDSeverity1.1$PINRatio <- tempSDSeverity1.1$SS5+tempSDSeverity1.1$SS4+tempSDSeverity1.1$SS3
 
                 }
     
@@ -657,6 +657,8 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
       group_by(admin3PCode,
                IndicatorWaterSufficiency_SS) %>% 
       summarise(WaterSufficiency = sum(Weight,na.rm = TRUE))
+    
+    
     
     tempSDSeverity1.2 <- dcast(tempSDSeverity1.2,admin3PCode ~ tempSDSeverity1.2$IndicatorWaterSufficiency_SS, value.var="WaterSufficiency", fun.aggregate=sum )
     
@@ -685,6 +687,7 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
     #IF(N4>=0.25,5,IF(SUM(M4:N4)>=0.25,4,IF(SUM(L4:N4)>=0.25,3,1)))
     
     
+    
     tempSDSeverity1.2$SSSD1.2 <- ifelse(tempSDSeverity1.2$SS5> 0.25, 5,
                                       ifelse(tempSDSeverity1.2$SS5+tempSDSeverity1.2$SS4> 0.25, 4,
                                              ifelse(tempSDSeverity1.2$SS5+tempSDSeverity1.2$SS4+tempSDSeverity1.2$SS3> 0.25, 3,
@@ -692,6 +695,8 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
                                                            ifelse(tempSDSeverity1.2$SS5+tempSDSeverity1.2$SS4+tempSDSeverity1.2$SS3+tempSDSeverity1.2$SS2+tempSDSeverity1.2$SS1>0.25, 1,1
                                                            )))))
     
+    
+    tempSDSeverity1.2$PINRatio <- tempSDSeverity1.2$SS5+tempSDSeverity1.2$SS4+tempSDSeverity1.2$SS3
   }
   
   
@@ -740,7 +745,7 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
                                                     ifelse(tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4+tempSDSeverity1.3$SS3+tempSDSeverity1.3$SS2>0.25, 2,
                                                            ifelse(tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4+tempSDSeverity1.3$SS3+tempSDSeverity1.3$SS2+tempSDSeverity1.3$SS1>0.25, 1,1
                                                            )))))
-    
+    tempSDSeverity1.3$PINRatio <- tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4+tempSDSeverity1.3$SS3  
   }
   
   
@@ -790,7 +795,7 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
                                                       ifelse(tempSDSeverity1.4$SS5+tempSDSeverity1.4$SS4+tempSDSeverity1.4$SS3+tempSDSeverity1.4$SS2>0.25, 2,
                                                              ifelse(tempSDSeverity1.4$SS5+tempSDSeverity1.4$SS4+tempSDSeverity3$SS3+tempSDSeverity1.4$SS2+tempSDSeverity1.4$SS1>0.25, 1,1
                                                              )))))
-    
+    tempSDSeverity1.4$PINRatio <- tempSDSeverity1.4$SS5+tempSDSeverity1.4$SS4+tempSDSeverity1.4$SS3 
    }
   
   
@@ -844,7 +849,8 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
                                                              ifelse(tempSDSeverity1.5$SS5+tempSDSeverity1.5$SS4+tempSDSeverity1.5$SS3+tempSDSeverity1.5$SS2+tempSDSeverity1.5$SS1>0.25, 1,1
                                                              )))))
     
-  }
+    tempSDSeverity1.5$PINRatio <- tempSDSeverity1.5$SS5+tempSDSeverity1.5$SS4+tempSDSeverity1.5$SS3
+    }
   
   
   
@@ -897,6 +903,8 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
                                                       ifelse(tempSDSeverity1.6$SS5+tempSDSeverity1.6$SS4+tempSDSeverity1.6$SS3+tempSDSeverity1.6$SS2>0.25, 2,
                                                              ifelse(tempSDSeverity1.6$SS5+tempSDSeverity1.6$SS4+tempSDSeverity1.6$SS3+tempSDSeverity1.6$SS2+tempSDSeverity1.6$SS1>0.25, 1,1
                                                              )))))
+    
+    tempSDSeverity1.6$PINRatio <- tempSDSeverity1.6$SS5+tempSDSeverity1.6$SS4+tempSDSeverity1.6$SS3  
     
   }
   
@@ -952,7 +960,8 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
                                                              ifelse(tempSDSeverity1.7$SS5+tempSDSeverity1.7$SS4+tempSDSeverity1.7$SS3+tempSDSeverity1.7$SS2+tempSDSeverity1.7$SS1>0.25, 1,1
                                                              )))))
     
-  }
+    tempSDSeverity1.7$PINRatio <- tempSDSeverity1.7$SS5+tempSDSeverity1.7$SS4+tempSDSeverity1.7$SS3
+    }
   
   
   
