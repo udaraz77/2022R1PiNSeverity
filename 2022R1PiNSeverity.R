@@ -4,7 +4,8 @@
 # Contributers ( Ramy Zaki : rh.zaki@gmail.com)
 
 # Loading relevant Libraries ----
-  options(java.parameters = "-Xmx2048m")
+
+   options(java.parameters = "-Xmx2048m")
   library(xlsx) #detach("package:xlsx", unload=TRUE)
   library(dplyr)
   #library(pivottabler)
@@ -93,6 +94,8 @@ filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HN
   #PiNSeverityData$ShelterToiletShared <-
   
   
+  
+  
   PiNSeverityData$TypeofSettlement <- RData_Main$HH_Type
   
   # W1. What water source did your household use the most in the last 30 days?
@@ -122,8 +125,33 @@ filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HN
   PiNSeverityData$DifferentiatingAnywayDrinkingWater <- gsub("66", "Yes, Other:", PiNSeverityData$DifferentiatingAnywayDrinkingWater)
   
   
+  
+  
+ # PiNSeverityData$IndicatorFRC_CHK <- RData_Main$W18
   #W.18. Can I have a glass of water to drink? (Request household for glass of water to drink, perform test and mark following. 1 Test / Household) Please mark one value
   PiNSeverityData$IndicatorFRC <- RData_Main$W18
+  
+  unique(PiNSeverityData$IndicatorFRC)
+  
+  PiNSeverityData$IndicatorFRC <- ifelse(PiNSeverityData$IndicatorFRC==1, 0, 
+         ifelse(PiNSeverityData$IndicatorFRC==2, 0.1, 
+                ifelse(PiNSeverityData$IndicatorFRC==3, 0.5, 
+                       ifelse(PiNSeverityData$IndicatorFRC==4, 1, 
+                              ifelse(PiNSeverityData$IndicatorFRC==5, 2, 
+                                     ifelse(PiNSeverityData$IndicatorFRC==6, 3, 
+                                        ifelse(PiNSeverityData$IndicatorFRC==7, -1,"")))))))
+  
+  # #---
+  # 
+  # PiNSeverityData[PiNSeverityData$IndicatorFRC_CHK == "1", "IndicatorFRC"] <- 0
+  # PiNSeverityData[PiNSeverityData$IndicatorFRC_CHK == "2", "IndicatorFRC"] <- 0.1
+  # PiNSeverityData[PiNSeverityData$IndicatorFRC_CHK == "3", "IndicatorFRC"] <- 0.5
+  # PiNSeverityData[PiNSeverityData$IndicatorFRC_CHK == "4", "IndicatorFRC"] <- 1
+  # PiNSeverityData[PiNSeverityData$IndicatorFRC_CHK == "5", "IndicatorFRC"] <- 2
+  # PiNSeverityData[PiNSeverityData$IndicatorFRC_CHK == "6", "IndicatorFRC"] <- 3
+  # PiNSeverityData[PiNSeverityData$IndicatorFRC_CHK == "7", "IndicatorFRC"] <- -1
+  # # 
+  
   
  # W.6. Did you have enough water in the last 30 days to meet your household needs? YES OR NO
   PiNSeverityData$IndicatorWaterSufficiency<- RData_Main$W6
@@ -252,53 +280,39 @@ filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HN
       # if FRc > 0 and Only source is 
       
       # Reference Code
-      {
-        # Load answer options for the FRC question
-        # W18_Answer_Option <- as.data.frame(RData_VariableDataOptions[RData_VariableDataOptions$list_name == "F20_List", c(2,3)])
-        # W1_Answer_Option <-  as.data.frame(RData_VariableDataOptions[RData_VariableDataOptions$list_name == "q0601R", c(2,3)])
-      }
-
-      
+      # Load answer options for the FRC question
+      # W18_Answer_Option <- as.data.frame(RData_VariableDataOptions[RData_VariableDataOptions$list_name == "F20_List", c(2,3)])
+      # W1_Answer_Option <-  as.data.frame(RData_VariableDataOptions[RData_VariableDataOptions$list_name == "q0601R", c(2,3)])
       
       # Load FRC Relevant data 
-      {
-        # Ramy: this can also be implemented with elseif statement. 
-        
-        PiNSeverityData$IndicatorFRC_CHK <- RData_Main$W18
-        
-        PiNSeverityData[PiNSeverityData$IndicatorFRC_CHK == "1", "IndicatorFRC"] <- 0
-        PiNSeverityData[PiNSeverityData$IndicatorFRC_CHK == "2", "IndicatorFRC"] <- 0.1
-        PiNSeverityData[PiNSeverityData$IndicatorFRC_CHK == "3", "IndicatorFRC"] <- 0.5
-        PiNSeverityData[PiNSeverityData$IndicatorFRC_CHK == "4", "IndicatorFRC"] <- 1
-        PiNSeverityData[PiNSeverityData$IndicatorFRC_CHK == "5", "IndicatorFRC"] <- 2
-        PiNSeverityData[PiNSeverityData$IndicatorFRC_CHK == "6", "IndicatorFRC"] <- 3
-        PiNSeverityData[PiNSeverityData$IndicatorFRC_CHK == "7", "IndicatorFRC"] <- -1
-      }
-
-
-       PiNSeverityData$IndicatorFRC_SS <- ifelse(PiNSeverityData$IndicatorFRC == -1, "",
+      # Ramy: this can also be implemented with elseif statement. 
+   
+      
+      PiNSeverityData$IndicatorFRC_SS <- ifelse(PiNSeverityData$IndicatorFRC == -1, "",
                                                 ifelse(PiNSeverityData$IndicatorFRC > 0 |
-                                                        grepl(c("Bottle","btl","River"), PiNSeverityData$MixingWaterSourceName) |
+                                                        grepl("Bottle", PiNSeverityData$MixingWaterSourceName) |
+                                                         grepl("btl", PiNSeverityData$MixingWaterSourceName) |
+                                                         grepl("River", PiNSeverityData$MixingWaterSourceName) |
+                                                    
                                                          grepl(c("Bottle"), PiNSeverityData$W1_MainWaterSource),1,
                                                        ifelse(PiNSeverityData$DifferentiatingAnywayDrinkingWater != "No",3,
                                                               ifelse(PiNSeverityData$W1_MainWaterSource == "Water_trucking" |
                                                                        PiNSeverityData$W1_MainWaterSource =="Open_well" |
                                                                        PiNSeverityData$W1_MainWaterSource =="River",5,4))))
-      
-      
-      #=IF([@[W.18]="","",
+        
+      #=IF([@[W.18.  Can I have a glass of water to drink? (Request household for glass of water to drink, perform test and mark following]="","",
       #IF(OR([@[W.18]]>0,Y3=1,N3="bottle"),1,
       #IF([@[W.4]]<>"No",3,
       #IF(OR([@[W1. What water source did your household use the most in the last 30 days?]]="Water trucking",
       #      [@[W1. What water source did your household use the most in the last 30 days?]]="Open well",
       #      [@[W1. What water source did your household use the most in the last 30 days?]]="River/Lake"),5,4))))
     }
-    
+  
+
     ## Indicator 1.2 Water Sufficiency ----
     {
       
   #"" =IF([@[W.6. Did you have enough water in the last 30 days to meet your household needs?]]="Yes",1,
-      
   #IF(SUM
       #([@[W.6.1. If no, How did you adjust for the lack of water? (choose all apply)/Reduce drinking water consumption]],
       #[@[W.6.1. If no, How did you adjust for the lack of water? (choose all apply)/Drink water usually used for cleaning or purposes other than drinking]])>0,5,
@@ -348,7 +362,7 @@ filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HN
                                                                            grepl("Hand Sanitizer", PiNSeverityData$IndicatorHygiene_Access), 3, 3)))
       
       
-      
+    }
     
     ## Indicator 1.4 Solid Waste ----
     {
@@ -570,12 +584,12 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
     
   }
 
-
   
+
 ## Summarizing at Sub District level -----
 {
   
-  ### Indicator 1.1 - Water safety IndicatorFRC_SS----
+    ###   Indicator 1.1 - Water safety IndicatorFRC_SS----
   {
 
 
@@ -637,7 +651,7 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
 
                 }
     
-   ## Indicator 1.2 - Water Sufficiency ----
+  ### Indicator 1.2 - Water Sufficiency ----
   {#PiNSeverityData$IndicatorWaterSufficiency_SS
     
     aunique<- unique(PiNSeverityData$IndicatorWaterSufficiency_SS)
@@ -700,7 +714,7 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
   }
   
   
-     ##Indicator 1.3 - Hygiene items ----
+  ### Indicator 1.3 - Hygiene items ----
   {
     
     
@@ -749,7 +763,7 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
   }
   
   
-  ##Indicator 1.4 Solid Waste ----
+  ### Indicator 1.4 Solid Waste ----
   {
     
     aunique<- unique(PiNSeverityData$IndicatorSolidWaste_SS)
@@ -799,7 +813,7 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
    }
   
   
-  ##Indicator 1.5 - Sanitation Problems ----
+  ### Indicator 1.5 - Sanitation Problems ----
   {
     
     aunique<- unique(PiNSeverityData$IndicatorSanitation_Problems_SS)
@@ -854,7 +868,7 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
   
   
   
-  ##Indicator 1.6 - WASH spend ----
+  ### Indicator 1.6 - WASH spend ----
   {
     
     aunique<- unique(PiNSeverityData$percent_hh_sepend_IN_water_and_Desludging_SS)
@@ -911,7 +925,7 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
   
   
   
-  ## Indicator 1.7 - Handwashing Observations ----
+  ### Indicator 1.7 - Handwashing Observations ----
   {
     
     aunique<- unique(PiNSeverityData$Indicatorhh_handwashing_facilities_SS)
@@ -968,9 +982,10 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
 
   
   
-  }
   
-    ## Summarizing SS at Sub District level -----
+}
+  
+## Summarizing SS at Sub District level -----
     
     {
       
@@ -1008,7 +1023,7 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
     
     
   
-  W2.Network
+W2.Network
 W2.Water_trucking
 W2.Closed_well_network
 W2.Closed_well_indivisual
@@ -1021,5 +1036,5 @@ W2_OtWer
 
 write.csv(PiNSeverityData,"C:\\Users\\udaraz\\OneDrive - UNICEF\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\Working_Folder_Data\\test1.csv")
 
-}
+
 
