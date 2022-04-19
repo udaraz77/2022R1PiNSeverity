@@ -291,15 +291,21 @@ filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HN
       PiNSeverityData$IndicatorFRC_SS <- ifelse(PiNSeverityData$IndicatorFRC == -1, "",
                                                 ifelse(PiNSeverityData$IndicatorFRC > 0 |
                                                         grepl("Bottle", PiNSeverityData$MixingWaterSourceName) |
-                                                         grepl("btl", PiNSeverityData$MixingWaterSourceName) |
-                                                         grepl("River", PiNSeverityData$MixingWaterSourceName) |
-                                                    
+    #Umar to check and uncomment if needed               grepl("btl", PiNSeverityData$MixingWaterSourceName) |
+                                                    grepl("River", PiNSeverityData$MixingWaterSourceName) |
                                                          grepl(c("Bottle"), PiNSeverityData$W1_MainWaterSource),1,
                                                        ifelse(PiNSeverityData$DifferentiatingAnywayDrinkingWater != "No",3,
                                                               ifelse(PiNSeverityData$W1_MainWaterSource == "Water_trucking" |
                                                                        PiNSeverityData$W1_MainWaterSource =="Open_well" |
-                                                                       PiNSeverityData$W1_MainWaterSource =="River",5,4))))
-        
+                                                                        PiNSeverityData$W1_MainWaterSource =="River",5,4))))
+      
+      
+      
+                                  
+
+
+     
+      
       #=IF([@[W.18.  Can I have a glass of water to drink? (Request household for glass of water to drink, perform test and mark following]="","",
       #IF(OR([@[W.18]]>0,Y3=1,N3="bottle"),1,
       #IF([@[W.4]]<>"No",3,
