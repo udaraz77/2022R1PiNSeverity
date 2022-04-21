@@ -5,7 +5,7 @@
 
 # Loading relevant Libraries ----
 
-   options(java.parameters = "-Xmx2048m")
+  options(java.parameters = "-Xmx2048m")
   library(xlsx) #detach("package:xlsx", unload=TRUE)
   library(dplyr)
   #library(pivottabler)
@@ -13,14 +13,13 @@
 
 # Data loading ----
 {
-   
   #Umar Computer
- # filepath <- "C:\\Users\\udaraz\\OneDrive - UNICEF\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
+  #filepath <- "C:\\Users\\udaraz\\OneDrive - UNICEF\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
   
   #rami Computer
   #Data Source : WASH_WoS_Sector_HNOs\HNO-2023\Round-1\Exceltool
   
-filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
+  filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HNOs\\HNO-2023\\Round-1\\DataReceived_28022022\\"
   
   
   RData_Main <- read.csv(paste(filepath,"WASH_HH_Survey_Dataset_Feb_2022_Main.csv",sep=""),encoding = "UTF-8")
@@ -93,9 +92,7 @@ filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HN
   # If yes, do you share this toilet with other households?
   #PiNSeverityData$ShelterToiletShared <-
   
-  
-  
-  
+ 
   PiNSeverityData$TypeofSettlement <- RData_Main$HH_Type
   
   # W1. What water source did your household use the most in the last 30 days?
@@ -125,10 +122,8 @@ filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HN
   PiNSeverityData$DifferentiatingAnywayDrinkingWater <- gsub("66", "Yes, Other:", PiNSeverityData$DifferentiatingAnywayDrinkingWater)
   
   
-  
-  
- # PiNSeverityData$IndicatorFRC_CHK <- RData_Main$W18
-  #W.18. Can I have a glass of water to drink? (Request household for glass of water to drink, perform test and mark following. 1 Test / Household) Please mark one value
+  # PiNSeverityData$IndicatorFRC_CHK <- RData_Main$W18
+  # W.18. Can I have a glass of water to drink? (Request household for glass of water to drink, perform test and mark following. 1 Test / Household) Please mark one value
   PiNSeverityData$IndicatorFRC <- RData_Main$W18
   
   unique(PiNSeverityData$IndicatorFRC)
@@ -153,21 +148,21 @@ filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HN
   # # 
   
   
- # W.6. Did you have enough water in the last 30 days to meet your household needs? YES OR NO
+  # W.6. Did you have enough water in the last 30 days to meet your household needs? YES OR NO
   PiNSeverityData$IndicatorWaterSufficiency<- RData_Main$W6
   
   #W.6.1. If no, How did you adjust for the lack of water? (choose all apply)
   PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water<- RData_Main$W6_1
   
   
-# 1 -Reduce drinking water consumption
-# 2- Spend money usually spent on other things to buy water
-# 3- Modify hygiene practices bath less etc.
-# 4-Receive water on credit borrow water or money for water
-# 5-Drink water usually used for cleaning or purposes other than drinking
-# 6-Not being able to wash hands with sufficient frequency
-# 66-Other
-#   
+  # 1 -Reduce drinking water consumption
+  # 2- Spend money usually spent on other things to buy water
+  # 3- Modify hygiene practices bath less etc.
+  # 4-Receive water on credit borrow water or money for water
+  # 5-Drink water usually used for cleaning or purposes other than drinking
+  # 6-Not being able to wash hands with sufficient frequency
+  # 66-Other
+  #   
   PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water <- gsub("1", "Reduce drinking water consumption", PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water)
   PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water <- gsub("2", "Spend money usually spent on other things to buy water", PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water)
   PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water <- gsub("3", "Modify hygiene practices bath less etc.", PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water)
@@ -175,8 +170,6 @@ filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HN
   PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water <- gsub("5", "Drink water usually used for cleaning or purposes other than drinking", PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water)
   PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water <- gsub("6", "Not being able to wash hands with sufficient frequency", PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water)
   PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water <- gsub("66", "Other", PiNSeverityData$IndicatorWaterSufficiency_adjust_lack_of_water)
-  
-
   
   #W.9. Was there one / multiple hygiene item your HH needed to procure in the last 30 days but could not access? (choose all apply) It needs to be asked in the way that stress on what HHs NEEDED but couldn?t access Probably better NOT to read a full list of items to HH but rather mark down what HH couldn?t access
   PiNSeverityData$IndicatorHygiene_Access<- RData_Main$w9
@@ -190,9 +183,6 @@ filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HN
   PiNSeverityData$IndicatorHygiene_Access <- gsub("6", "Babies disposable diapers", PiNSeverityData$IndicatorHygiene_Access)
   PiNSeverityData$IndicatorHygiene_Access <- gsub("7", "Washing powder", PiNSeverityData$IndicatorHygiene_Access)
   PiNSeverityData$IndicatorHygiene_Access <- gsub("9", "Toothpaste adults", PiNSeverityData$IndicatorHygiene_Access)
-  
-  
-  
   
 
   #W.10. What is the way you disposed of garbage in the last 30 days? (choose all apply)
@@ -258,64 +248,57 @@ filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HN
   
   #CALCULATED % WATER AND DESLUDGING
   
-    # W.7. What percentage of monthly income is used to buy water?  (Specify)
+  # W.7. What percentage of monthly income is used to buy water?  (Specify)
   PiNSeverityData$Percent_MonthlyIncome_buy_Water<- RData_Main$W7
   
   # W.7.1. How much your HH spent in the past 30 days on purchasing water? (in SYP) (Specify)
   PiNSeverityData$hh_MoneySpent_purchasing_Water<- RData_Main$W7_1
-  
-  
-  
   }
 
 
 # Severity Scoring at HH ----
+{
+      # Reference Code to find out list option and 
+      # Load answer options for the FRC question
+      # W18_Answer_Option <- as.data.frame(RData_VariableDataOptions[RData_VariableDataOptions$list_name == "F20_List", c(2,3)])
+      # W1_Answer_Option <-  as.data.frame(RData_VariableDataOptions[RData_VariableDataOptions$list_name == "q0601R", c(2,3)])
+  
   ## indicators for severity scoring -----
   {
 
     ### Indicator 1.1 FRC ----
     {
-      #Function Logic
-      # if no data reported make it blank - no severity score assigned
-      # if FRc > 0 and Only source is 
+      # Calculation Logic as in Excel tool
       
-      # Reference Code
-      # Load answer options for the FRC question
-      # W18_Answer_Option <- as.data.frame(RData_VariableDataOptions[RData_VariableDataOptions$list_name == "F20_List", c(2,3)])
-      # W1_Answer_Option <-  as.data.frame(RData_VariableDataOptions[RData_VariableDataOptions$list_name == "q0601R", c(2,3)])
+      #   IF([@[W.18.  Can I have a glass of water to drink? (Request household for glass of water to drink, perform test and mark following]="","",
+      #   IF(OR([@[W.18]]>0,Y3=1,N3="bottle"),1,
+      #   IF([@[W.4]]<>"No",3,
+      #   IF(OR([@[W1. What water source did your household use the most in the last 30 days?]]="Water trucking",
+      #          [@[W1. What water source did your household use the most in the last 30 days?]]="Open well",
+      #           [@[W1. What water source did your household use the most in the last 30 days?]]="River/Lake"),5,4))))
       
-      # Load FRC Relevant data 
-      # Ramy: this can also be implemented with elseif statement. 
+      # Calculation logic adopted in R
+      # String search is used 
    
       
       PiNSeverityData$IndicatorFRC_SS <- ifelse(PiNSeverityData$IndicatorFRC == -1, "",
                                                 ifelse(PiNSeverityData$IndicatorFRC > 0 |
                                                         grepl("Bottle", PiNSeverityData$MixingWaterSourceName) |
-    #Umar to check and uncomment if needed               grepl("btl", PiNSeverityData$MixingWaterSourceName) |
-                                                    grepl("River", PiNSeverityData$MixingWaterSourceName) |
-                                                         grepl(c("Bottle"), PiNSeverityData$W1_MainWaterSource),1,
-                                                       ifelse(PiNSeverityData$DifferentiatingAnywayDrinkingWater != "No",3,
-                                                              ifelse(PiNSeverityData$W1_MainWaterSource == "Water_trucking" |
-                                                                       PiNSeverityData$W1_MainWaterSource =="Open_well" |
-                                                                        PiNSeverityData$W1_MainWaterSource =="River",5,4))))
+                                                        grepl("btl", PiNSeverityData$MixingWaterSourceName) |
+                                                        grepl("River", PiNSeverityData$MixingWaterSourceName) |
+                                                        grepl(c("Bottle"), PiNSeverityData$W1_MainWaterSource),1,
+                                                       
+                                                      ifelse(PiNSeverityData$DifferentiatingAnywayDrinkingWater != "No",3,
+                                                            ifelse(PiNSeverityData$W1_MainWaterSource == "Water_trucking" |
+                                                                    PiNSeverityData$W1_MainWaterSource =="Open_well" |
+                                                                    PiNSeverityData$W1_MainWaterSource =="River",5,4))))
       
-      
-      
-                                  
 
 
-     
-      
-      #=IF([@[W.18.  Can I have a glass of water to drink? (Request household for glass of water to drink, perform test and mark following]="","",
-      #IF(OR([@[W.18]]>0,Y3=1,N3="bottle"),1,
-      #IF([@[W.4]]<>"No",3,
-      #IF(OR([@[W1. What water source did your household use the most in the last 30 days?]]="Water trucking",
-      #      [@[W1. What water source did your household use the most in the last 30 days?]]="Open well",
-      #      [@[W1. What water source did your household use the most in the last 30 days?]]="River/Lake"),5,4))))
     }
   
 
-    ## Indicator 1.2 Water Sufficiency ----
+    ##  Indicator 1.2 Water Sufficiency ----
     {
       
   #"" =IF([@[W.6. Did you have enough water in the last 30 days to meet your household needs?]]="Yes",1,
@@ -337,7 +320,7 @@ filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HN
                                                              
        }
       
-    ## Indicator 1.3 Hygiene Access ----
+    ##  Indicator 1.3 Hygiene Access ----
     {
       
       ##=IF([@[W.9. All items could access]]=1,1,
@@ -370,7 +353,7 @@ filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HN
       
     }
     
-    ## Indicator 1.4 Solid Waste ----
+    ##  Indicator 1.4 Solid Waste ----
     {
       # IF
       # (
@@ -405,7 +388,7 @@ filepath <- "C:\\Users\\rzaki\\OneDrive - UNICEF\\Umar Daraz\\WASH_WoS_Sector_HN
       
     }
     
-    ## Indicator 1.5 Sanitation Problems----
+    ##  Indicator 1.5 Sanitation Problems----
     {
       
     # IF([@['#:]]>20,"",
@@ -445,7 +428,7 @@ PiNSeverityData$IndicatorSanitation_Problems_SS <- ifelse (PiNSeverityData$hhsiz
     }
     
 
-    ## Indicator 1.6 % Spend water and desludging----
+    ##  Indicator 1.6 % Spend water and desludging----
     {
       #Indicators and Thresholds '!$F$20 = 15
       #Indicators and Thresholds '!$E$20 = 10
@@ -536,7 +519,7 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
     
     }
     
-    ## Indicator 1.7 Household handwashing facilities----
+    ##  Indicator 1.7 Household handwashing facilities----
     {
       #=IF([@[W.17. Can you please show me the place where you usually wash hands? (choose one)]]="Refuse","",
       #   IF([@[W.17.1 Soap and water at the handwashing facility? (OBSERVATION)]]="both soap and water",1,
@@ -554,7 +537,7 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
       
     }
     
-    ## Indicator 1.8 Househould receives humanitarian assistance----
+    ##  Indicator 1.8 Househould receives humanitarian assistance----
     {
       
       #   2.1 % of Households receiving humanitarian assistance		20%	40%	60%	80%
@@ -590,408 +573,408 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
     
   }
 
-  
-
-## Summarizing at Sub District level -----
-{
-  
-    ###   Indicator 1.1 - Water safety IndicatorFRC_SS----
-  {
-
-
-#  PiNSeverityData$IndicatorFRC_SS[PiNSeverityData$IndicatorFRC_SS=="5"]  <- "2"
-  
-  
-  aunique<- unique(PiNSeverityData$IndicatorFRC_SS)
-  #check if SS 1, 2, 3, 4, 5 are all exist
-  
-  Missing_ss <- c("","","","","")
- 
-    for(i in 1:5){
-        if(length(grep(as.character(i), aunique,ignore.case = TRUE)) == 0){
-          Missing_ss[i] <- c(i)
-        }
-      }
-  
-
-  tempSDSeverity1.1 <- PiNSeverityData %>% 
-            group_by(admin3PCode,
-            IndicatorFRC_SS) %>% 
-  summarise(FRCSS = sum(Weight,na.rm = TRUE))
-  
-  tempSDSeverity1.1 <- dcast(tempSDSeverity1.1,admin3PCode ~ tempSDSeverity1.1$IndicatorFRC_SS, value.var="FRCSS", fun.aggregate=sum )
-  
-  for(i in 1:5)
-  {
-    if(Missing_ss[i] ==  1)  { tempSDSeverity1.1$"1" <- 0  }
-    if(Missing_ss[i] ==  2)  { tempSDSeverity1.1$"2" <- 0  }
-    if(Missing_ss[i] ==  3)  { tempSDSeverity1.1$"3" <- 0  }
-    if(Missing_ss[i] ==  4)  { tempSDSeverity1.1$"4" <- 0  }
-    if(Missing_ss[i] ==  5)  { tempSDSeverity1.1$"5" <- 0  }
-  }
-  
-  tempSDSeverity1.1$total <- tempSDSeverity1.1$`1`+tempSDSeverity1.1$`3`+tempSDSeverity1.1$`4`+ tempSDSeverity1.1$`5`+ tempSDSeverity1.1$`2`
-  
-  tempSDSeverity1.1$SS1 <- tempSDSeverity1.1$`1`/tempSDSeverity1.1$total
-  tempSDSeverity1.1$SS1 <- if(Missing_ss[1]== "1"){ 0 } else {tempSDSeverity1.1$`1`/tempSDSeverity1.1$total}
-  tempSDSeverity1.1$SS2 <- if(Missing_ss[2]== "2"){ 0 } else {tempSDSeverity1.1$`2`/tempSDSeverity1.1$total}
-  tempSDSeverity1.1$SS3 <- if(Missing_ss[3]== "3"){ 0 } else {tempSDSeverity1.1$`3`/tempSDSeverity1.1$total}
-  tempSDSeverity1.1$SS4 <- if(Missing_ss[4]== "4"){ 0 } else {tempSDSeverity1.1$`4`/tempSDSeverity1.1$total}
-  tempSDSeverity1.1$SS5 <- if(Missing_ss[5]== "5"){ 0 } else {tempSDSeverity1.1$`5`/tempSDSeverity1.1$total}
-  tempSDSeverity1.1$SST <- tempSDSeverity1.1$SS1 + tempSDSeverity1.1$SS2 + tempSDSeverity1.1$SS3 + tempSDSeverity1.1$SS4 + tempSDSeverity1.1$SS5
-  
-  
-  #=IF(F21>0.1,"",IF(GETPIVOTDATA("hh.weights",$A$2,"A.9 Sub- District","SY010000","Indicator 1.1 FRC","")>0.1,""
-  # ,IF(E21>=0.25,5,
-  #  IF(SUM(D21:E21)>=0.25,4,
-  #  IF(SUM(C21:E21)>=0.25,3,1)))))
-  
-  tempSDSeverity1.1$SSSD1.1 <- ifelse(tempSDSeverity1.1$SS5> 0.25, 5,
-    ifelse(tempSDSeverity1.1$SS5+tempSDSeverity1.1$SS4> 0.25, 4,
-           ifelse(tempSDSeverity1.1$SS5+tempSDSeverity1.1$SS4+tempSDSeverity1.1$SS3> 0.25, 3,
-                  ifelse(tempSDSeverity1.1$SS5+tempSDSeverity1.1$SS4+tempSDSeverity1.1$SS3+tempSDSeverity1.1$SS2>0.25, 2,
-                         ifelse(tempSDSeverity1.1$SS5+tempSDSeverity1.1$SS4+tempSDSeverity1.1$SS3+tempSDSeverity1.1$SS2+tempSDSeverity1.1$SS1>0.25, 1,1
-                         )))))
-    
-  tempSDSeverity1.1$PINRatio <- tempSDSeverity1.1$SS5+tempSDSeverity1.1$SS4+tempSDSeverity1.1$SS3
-
-                }
-    
-  ### Indicator 1.2 - Water Sufficiency ----
-  {#PiNSeverityData$IndicatorWaterSufficiency_SS
-    
-    aunique<- unique(PiNSeverityData$IndicatorWaterSufficiency_SS)
-    #check if SS 1, 2, 3, 4, 5 are all exist
-    
-    Missing_ss <- c("","","","","")
-    
-    for(i in 1:5){
-      if(length(grep(as.character(i), aunique,ignore.case = TRUE)) == 0){
-        Missing_ss[i] <- c(i)
-      }
-    }
-    
-    
-    
-    tempSDSeverity1.2 <- PiNSeverityData %>% 
-      group_by(admin3PCode,
-               IndicatorWaterSufficiency_SS) %>% 
-      summarise(WaterSufficiency = sum(Weight,na.rm = TRUE))
-    
-    
-    
-    tempSDSeverity1.2 <- dcast(tempSDSeverity1.2,admin3PCode ~ tempSDSeverity1.2$IndicatorWaterSufficiency_SS, value.var="WaterSufficiency", fun.aggregate=sum )
-    
-    
-    for(i in 1:5)
-      {
-      if(Missing_ss[i] ==  1)  { tempSDSeverity1.2$"1" <- 0  }
-      if(Missing_ss[i] ==  2)  { tempSDSeverity1.2$"2" <- 0  }
-      if(Missing_ss[i] ==  3)  { tempSDSeverity1.2$"3" <- 0  }
-      if(Missing_ss[i] ==  4)  { tempSDSeverity1.2$"4" <- 0  }
-      if(Missing_ss[i] ==  5)  { tempSDSeverity1.2$"5" <- 0  }
-    }
-    
-    
- 
-    tempSDSeverity1.2$total <- tempSDSeverity1.2$`1`+tempSDSeverity1.2$`3`+tempSDSeverity1.2$`4`+ tempSDSeverity1.2$`5`+tempSDSeverity1.2$`2`
-    tempSDSeverity1.2$SS1 <- tempSDSeverity1.2$`1`/tempSDSeverity1.2$total
-    tempSDSeverity1.2$SS1 <- if(Missing_ss[1]== "1"){ 0 } else {tempSDSeverity1.2$`1`/tempSDSeverity1.2$total}
-    tempSDSeverity1.2$SS2 <- if(Missing_ss[2]== "2"){ 0 } else {tempSDSeverity1.2$`2`/tempSDSeverity1.2$total}
-    tempSDSeverity1.2$SS3 <- if(Missing_ss[3]== "3"){ 0 } else {tempSDSeverity1.2$`3`/tempSDSeverity1.2$total}
-    tempSDSeverity1.2$SS4 <- if(Missing_ss[4]== "4"){ 0 } else {tempSDSeverity1.2$`4`/tempSDSeverity1.2$total}
-    tempSDSeverity1.2$SS5 <- if(Missing_ss[5]== "5"){ 0 } else {tempSDSeverity1.2$`5`/tempSDSeverity1.2$total}
-    tempSDSeverity1.2$SST <- tempSDSeverity1.2$SS1 + tempSDSeverity1.2$SS2 + tempSDSeverity1.2$SS3 + tempSDSeverity1.2$SS4 + tempSDSeverity1.2$SS5
-    
-    
-    #IF(N4>=0.25,5,IF(SUM(M4:N4)>=0.25,4,IF(SUM(L4:N4)>=0.25,3,1)))
-    
-    
-    
-    tempSDSeverity1.2$SSSD1.2 <- ifelse(tempSDSeverity1.2$SS5> 0.25, 5,
-                                      ifelse(tempSDSeverity1.2$SS5+tempSDSeverity1.2$SS4> 0.25, 4,
-                                             ifelse(tempSDSeverity1.2$SS5+tempSDSeverity1.2$SS4+tempSDSeverity1.2$SS3> 0.25, 3,
-                                                    ifelse(tempSDSeverity1.2$SS5+tempSDSeverity1.2$SS4+tempSDSeverity1.2$SS3+tempSDSeverity1.2$SS2>0.25, 2,
-                                                           ifelse(tempSDSeverity1.2$SS5+tempSDSeverity1.2$SS4+tempSDSeverity1.2$SS3+tempSDSeverity1.2$SS2+tempSDSeverity1.2$SS1>0.25, 1,1
-                                                           )))))
-    
-    
-    tempSDSeverity1.2$PINRatio <- tempSDSeverity1.2$SS5+tempSDSeverity1.2$SS4+tempSDSeverity1.2$SS3
-  }
-  
-  
-  ### Indicator 1.3 - Hygiene items ----
-  {
-    
-    
-    aunique<- unique(PiNSeverityData$IndicatorHygiene_Access_SS)
-    #check if SS 1, 2, 3, 4, 5 are all exist
-    Missing_ss <- c("","","","","")
-    
-    for(i in 1:5){
-      if(length(grep(as.character(i), aunique,ignore.case = TRUE)) == 0){
-        Missing_ss[i] <- c(i)
-      }
-    }
-    
-    tempSDSeverity1.3 <- PiNSeverityData %>% 
-      group_by(admin3PCode,
-               IndicatorHygiene_Access_SS) %>% 
-      summarise(HygineAccess = sum(Weight,na.rm = TRUE))
-    tempSDSeverity1.3 <- dcast(tempSDSeverity1.3,admin3PCode ~ tempSDSeverity1.3$IndicatorHygiene_Access_SS, value.var="HygineAccess", fun.aggregate=sum )
-    
-    for(i in 1:5)
-    {
-      if(Missing_ss[i] ==  1)  { tempSDSeverity1.3$"1" <- 0  }
-      if(Missing_ss[i] ==  2)  { tempSDSeverity1.3$"2" <- 0  }
-      if(Missing_ss[i] ==  3)  { tempSDSeverity1.3$"3" <- 0  }
-      if(Missing_ss[i] ==  4)  { tempSDSeverity1.3$"4" <- 0  }
-      if(Missing_ss[i] ==  5)  { tempSDSeverity1.3$"5" <- 0  }
-    }
-    
-    tempSDSeverity1.3$total <- tempSDSeverity1.3$`1`+tempSDSeverity1.3$`3`+tempSDSeverity1.3$`4`+ tempSDSeverity1.3$`5`+tempSDSeverity1.3$`2`
-    tempSDSeverity1.3$SS1 <- tempSDSeverity1.3$`1`/tempSDSeverity1.3$total
-    tempSDSeverity1.3$SS1 <- if(Missing_ss[1]== "1"){ 0 } else {tempSDSeverity1.3$`1`/tempSDSeverity1.3$total}
-    tempSDSeverity1.3$SS2 <- if(Missing_ss[2]== "2"){ 0 } else {tempSDSeverity1.3$`2`/tempSDSeverity1.3$total}
-    tempSDSeverity1.3$SS3 <- if(Missing_ss[3]== "3"){ 0 } else {tempSDSeverity1.3$`3`/tempSDSeverity1.3$total}
-    tempSDSeverity1.3$SS4 <- if(Missing_ss[4]== "4"){ 0 } else {tempSDSeverity1.3$`4`/tempSDSeverity1.3$total}
-    tempSDSeverity1.3$SS5 <- if(Missing_ss[5]== "5"){ 0 } else {tempSDSeverity1.3$`5`/tempSDSeverity1.3$total}
-    tempSDSeverity1.3$SST <- tempSDSeverity1.3$SS1 + tempSDSeverity1.3$SS2 + tempSDSeverity1.3$SS3 + tempSDSeverity1.3$SS4 + tempSDSeverity1.3$SS5
-    
-    #IF(N4>=0.25,5,IF(SUM(M4:N4)>=0.25,4,IF(SUM(L4:N4)>=0.25,3,1)))
-    tempSDSeverity1.3$SSSD1.3 <- ifelse(tempSDSeverity1.3$SS5> 0.25, 5,
-                                      ifelse(tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4> 0.25, 4,
-                                             ifelse(tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4+tempSDSeverity1.3$SS3> 0.25, 3,
-                                                    ifelse(tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4+tempSDSeverity1.3$SS3+tempSDSeverity1.3$SS2>0.25, 2,
-                                                           ifelse(tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4+tempSDSeverity1.3$SS3+tempSDSeverity1.3$SS2+tempSDSeverity1.3$SS1>0.25, 1,1
-                                                           )))))
-    tempSDSeverity1.3$PINRatio <- tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4+tempSDSeverity1.3$SS3  
-  }
-  
-  
-  ### Indicator 1.4 Solid Waste ----
-  {
-    
-    aunique<- unique(PiNSeverityData$IndicatorSolidWaste_SS)
-    #check if SS 1, 2, 3, 4, 5 are all exist
-    Missing_ss <- c("","","","","")
-    
-    for(i in 1:5){
-      if(length(grep(as.character(i), aunique,ignore.case = TRUE)) == 0){
-        Missing_ss[i] <- c(i)
-      }
-    }
-    
-    tempSDSeverity1.4 <- PiNSeverityData %>% 
-      group_by(admin3PCode,
-               IndicatorSolidWaste_SS) %>% 
-      summarise(SolidWaste = sum(Weight,na.rm = TRUE))
-    tempSDSeverity1.4 <- dcast(tempSDSeverity1.4,admin3PCode ~ tempSDSeverity1.4$IndicatorSolidWaste_SS, value.var="SolidWaste", fun.aggregate=sum )
-    
-    for(i in 1:5)
-    {
-      if(Missing_ss[i] ==  1)  { tempSDSeverity1.4$"1" <- 0  }
-      if(Missing_ss[i] ==  2)  { tempSDSeverity1.4$"2" <- 0  }
-      if(Missing_ss[i] ==  3)  { tempSDSeverity1.4$"3" <- 0  }
-      if(Missing_ss[i] ==  4)  { tempSDSeverity1.4$"4" <- 0  }
-      if(Missing_ss[i] ==  5)  { tempSDSeverity1.4$"5" <- 0  }
-    }
-    
-    tempSDSeverity1.4$total <- tempSDSeverity1.4$`1`+tempSDSeverity1.4$`3`+tempSDSeverity1.4$`4`+ tempSDSeverity1.4$`5`+tempSDSeverity1.4$`2`
-    tempSDSeverity1.4$SS1 <- tempSDSeverity1.4$`1`/tempSDSeverity1.4$total
-    tempSDSeverity1.4$SS1 <- if(Missing_ss[1]== "1"){ 0 } else {tempSDSeverity1.4$`1`/tempSDSeverity1.4$total}
-    tempSDSeverity1.4$SS2 <- if(Missing_ss[2]== "2"){ 0 } else {tempSDSeverity1.4$`2`/tempSDSeverity1.4$total}
-    tempSDSeverity1.4$SS3 <- if(Missing_ss[3]== "3"){ 0 } else {tempSDSeverity1.4$`3`/tempSDSeverity1.4$total}
-    tempSDSeverity1.4$SS4 <- if(Missing_ss[4]== "4"){ 0 } else {tempSDSeverity1.4$`4`/tempSDSeverity1.4$total}
-    tempSDSeverity1.4$SS5 <- if(Missing_ss[5]== "5"){ 0 } else {tempSDSeverity1.4$`5`/tempSDSeverity1.4$total}
-    tempSDSeverity1.4$SST <- tempSDSeverity1.4$SS1 + tempSDSeverity1.4$SS2 + tempSDSeverity1.4$SS3 + tempSDSeverity1.4$SS4 + tempSDSeverity1.4$SS5
-    
-  
-    #=IF(AD4>=0.25,4,IF(SUM(AC4:AD4)>=0.25,3,IF(SUM(AB4:AD4)>=0.25,2,1)))
-    
-    tempSDSeverity1.4$SSSD1.4 <- ifelse(tempSDSeverity1.4$SS5> 0.25, 5,
-                                        ifelse(tempSDSeverity1.4$SS5+tempSDSeverity1.4$SS4> 0.25, 4,
-                                               ifelse(tempSDSeverity1.4$SS5+tempSDSeverity1.4$SS4+tempSDSeverity1.4$SS3> 0.25, 3,
-                                                      ifelse(tempSDSeverity1.4$SS5+tempSDSeverity1.4$SS4+tempSDSeverity1.4$SS3+tempSDSeverity1.4$SS2>0.25, 2,
-                                                             ifelse(tempSDSeverity1.4$SS5+tempSDSeverity1.4$SS4+tempSDSeverity3$SS3+tempSDSeverity1.4$SS2+tempSDSeverity1.4$SS1>0.25, 1,1
-                                                             )))))
-    tempSDSeverity1.4$PINRatio <- tempSDSeverity1.4$SS5+tempSDSeverity1.4$SS4+tempSDSeverity1.4$SS3 
-   }
-  
-  
-  ### Indicator 1.5 - Sanitation Problems ----
-  {
-    
-    aunique<- unique(PiNSeverityData$IndicatorSanitation_Problems_SS)
-    #check if SS 1, 2, 3, 4, 5 are all exist
-    Missing_ss <- c("","","","","")
-    
-    for(i in 1:5){
-      if(length(grep(as.character(i), aunique,ignore.case = TRUE)) == 0){
-        Missing_ss[i] <- c(i)
-      }
-    }
-    
-    tempSDSeverity1.5 <- PiNSeverityData %>% 
-      group_by(admin3PCode,
-               IndicatorSanitation_Problems_SS) %>% 
-      summarise(SanitationProblems = sum(Weight,na.rm = TRUE))
-    tempSDSeverity1.5 <- dcast(tempSDSeverity1.5,admin3PCode ~ tempSDSeverity1.5$IndicatorSanitation_Problems_SS, value.var="SanitationProblems", fun.aggregate=sum )
-    
-    for(i in 1:5)
-    {
-      if(Missing_ss[i] ==  1)  { tempSDSeverity1.5$"1" <- 0  }
-      if(Missing_ss[i] ==  2)  { tempSDSeverity1.5$"2" <- 0  }
-      if(Missing_ss[i] ==  3)  { tempSDSeverity1.5$"3" <- 0  }
-      if(Missing_ss[i] ==  4)  { tempSDSeverity1.5$"4" <- 0  }
-      if(Missing_ss[i] ==  5)  { tempSDSeverity1.5$"5" <- 0  }
-    }
-    
-    tempSDSeverity1.5$total <- tempSDSeverity1.5$`1`+tempSDSeverity1.5$`3`+tempSDSeverity1.5$`4`+ tempSDSeverity1.5$`5`+tempSDSeverity1.5$`2`
-    tempSDSeverity1.5$SS1 <- tempSDSeverity1.5$`1`/tempSDSeverity1.5$total
-    tempSDSeverity1.5$SS1 <- if(Missing_ss[1]== "1"){ 0 } else {tempSDSeverity1.5$`1`/tempSDSeverity1.5$total}
-    tempSDSeverity1.5$SS2 <- if(Missing_ss[2]== "2"){ 0 } else {tempSDSeverity1.5$`2`/tempSDSeverity1.5$total}
-    tempSDSeverity1.5$SS3 <- if(Missing_ss[3]== "3"){ 0 } else {tempSDSeverity1.5$`3`/tempSDSeverity1.5$total}
-    tempSDSeverity1.5$SS4 <- if(Missing_ss[4]== "4"){ 0 } else {tempSDSeverity1.5$`4`/tempSDSeverity1.5$total}
-    tempSDSeverity1.5$SS5 <- if(Missing_ss[5]== "5"){ 0 } else {tempSDSeverity1.5$`5`/tempSDSeverity1.5$total}
-    tempSDSeverity1.5$SST <- tempSDSeverity1.5$SS1 + tempSDSeverity1.5$SS2 + tempSDSeverity1.5$SS3 + tempSDSeverity1.5$SS4 + tempSDSeverity1.5$SS5
-    
-    
-    #=IF(AD4>=0.25,4,IF(SUM(AC4:AD4)>=0.25,3,IF(SUM(AB4:AD4)>=0.25,2,1)))
-    
-    
-
-    
-    tempSDSeverity1.5$SSSD1.5 <- ifelse(tempSDSeverity1.5$SS5> 0.25, 5,
-                                        ifelse(tempSDSeverity1.5$SS5+tempSDSeverity1.5$SS4> 0.25, 4,
-                                               ifelse(tempSDSeverity1.5$SS5+tempSDSeverity1.5$SS4+tempSDSeverity1.5$SS3> 0.25, 3,
-                                                      ifelse(tempSDSeverity1.5$SS5+tempSDSeverity1.5$SS4+tempSDSeverity1.5$SS3+tempSDSeverity1.5$SS2>0.25, 2,
-                                                             ifelse(tempSDSeverity1.5$SS5+tempSDSeverity1.5$SS4+tempSDSeverity1.5$SS3+tempSDSeverity1.5$SS2+tempSDSeverity1.5$SS1>0.25, 1,1
-                                                             )))))
-    
-    tempSDSeverity1.5$PINRatio <- tempSDSeverity1.5$SS5+tempSDSeverity1.5$SS4+tempSDSeverity1.5$SS3
-    }
-  
-  
-  
-  ### Indicator 1.6 - WASH spend ----
-  {
-    
-    aunique<- unique(PiNSeverityData$percent_hh_sepend_IN_water_and_Desludging_SS)
-    #check if SS 1, 2, 3, 4, 5 are all exist
-    Missing_ss <- c("","","","","")
-    
-    for(i in 1:5){
-      if(length(grep(as.character(i), aunique,ignore.case = TRUE)) == 0){
-        Missing_ss[i] <- c(i)
-      }
-    }
-    
-    tempSDSeverity1.6 <- PiNSeverityData %>% 
-      group_by(admin3PCode,
-               percent_hh_sepend_IN_water_and_Desludging_SS) %>% 
-      summarise(HHSpendInWaterDesludging = sum(Weight,na.rm = TRUE))
-    tempSDSeverity1.6 <- dcast(tempSDSeverity1.6,admin3PCode ~ tempSDSeverity1.6$percent_hh_sepend_IN_water_and_Desludging_SS, value.var="HHSpendInWaterDesludging", fun.aggregate=sum )
-    
-    for(i in 1:5)
-    {
-      if(Missing_ss[i] ==  1)  { tempSDSeverity1.6$"1" <- 0  }
-      if(Missing_ss[i] ==  2)  { tempSDSeverity1.6$"2" <- 0  }
-      if(Missing_ss[i] ==  3)  { tempSDSeverity1.6$"3" <- 0  }
-      if(Missing_ss[i] ==  4)  { tempSDSeverity1.6$"4" <- 0  }
-      if(Missing_ss[i] ==  5)  { tempSDSeverity1.6$"5" <- 0  }
-    }
-    
-    tempSDSeverity1.6$total <- tempSDSeverity1.6$`1`+tempSDSeverity1.6$`3`+tempSDSeverity1.6$`4`+ tempSDSeverity1.6$`5`+tempSDSeverity1.6$`2`
-    tempSDSeverity1.6$SS1 <- tempSDSeverity1.6$`1`/tempSDSeverity1.6$total
-    tempSDSeverity1.6$SS1 <- if(Missing_ss[1]== "1"){ 0 } else {tempSDSeverity1.6$`1`/tempSDSeverity1.6$total}
-    tempSDSeverity1.6$SS2 <- if(Missing_ss[2]== "2"){ 0 } else {tempSDSeverity1.6$`2`/tempSDSeverity1.6$total}
-    tempSDSeverity1.6$SS3 <- if(Missing_ss[3]== "3"){ 0 } else {tempSDSeverity1.6$`3`/tempSDSeverity1.6$total}
-    tempSDSeverity1.6$SS4 <- if(Missing_ss[4]== "4"){ 0 } else {tempSDSeverity1.6$`4`/tempSDSeverity1.6$total}
-    tempSDSeverity1.6$SS5 <- if(Missing_ss[5]== "5"){ 0 } else {tempSDSeverity1.6$`5`/tempSDSeverity1.6$total}
-    tempSDSeverity1.6$SST <- tempSDSeverity1.6$SS1 + tempSDSeverity1.6$SS2 + tempSDSeverity1.6$SS3 + tempSDSeverity1.6$SS4 + tempSDSeverity1.6$SS5
-    
-    
-    #=IF(AD4>=0.25,4,IF(SUM(AC4:AD4)>=0.25,3,IF(SUM(AB4:AD4)>=0.25,2,1)))
-    
-    
-    
-    
-    tempSDSeverity1.6$SSSD1.6 <- ifelse(tempSDSeverity1.6$SS5> 0.25, 5,
-                                        ifelse(tempSDSeverity1.6$SS5+tempSDSeverity1.6$SS4> 0.25, 4,
-                                               ifelse(tempSDSeverity1.6$SS5+tempSDSeverity1.6$SS4+tempSDSeverity1.6$SS3> 0.25, 3,
-                                                      ifelse(tempSDSeverity1.6$SS5+tempSDSeverity1.6$SS4+tempSDSeverity1.6$SS3+tempSDSeverity1.6$SS2>0.25, 2,
-                                                             ifelse(tempSDSeverity1.6$SS5+tempSDSeverity1.6$SS4+tempSDSeverity1.6$SS3+tempSDSeverity1.6$SS2+tempSDSeverity1.6$SS1>0.25, 1,1
-                                                             )))))
-    
-    tempSDSeverity1.6$PINRatio <- tempSDSeverity1.6$SS5+tempSDSeverity1.6$SS4+tempSDSeverity1.6$SS3  
-    
-  }
-  
-  
-  
-  
-  ### Indicator 1.7 - Handwashing Observations ----
-  {
-    
-    aunique<- unique(PiNSeverityData$Indicatorhh_handwashing_facilities_SS)
-    #check if SS 1, 2, 3, 4, 5 are all exist
-    Missing_ss <- c("","","","","")
-    
-    for(i in 1:5){
-      if(length(grep(as.character(i), aunique,ignore.case = TRUE)) == 0){
-        Missing_ss[i] <- c(i)
-      }
-    }
-    
-    tempSDSeverity1.7 <- PiNSeverityData %>% 
-      group_by(admin3PCode,
-               Indicatorhh_handwashing_facilities_SS) %>% 
-      summarise(Handwashingobservation = sum(Weight,na.rm = TRUE))
-    tempSDSeverity1.7 <- dcast(tempSDSeverity1.7,admin3PCode ~ tempSDSeverity1.7$Indicatorhh_handwashing_facilities_SS, value.var="Handwashingobservation", fun.aggregate=sum )
-    
-    for(i in 1:5)
-    {
-      if(Missing_ss[i] ==  1)  { tempSDSeverity1.7$"1" <- 0  }
-      if(Missing_ss[i] ==  2)  { tempSDSeverity1.7$"2" <- 0  }
-      if(Missing_ss[i] ==  3)  { tempSDSeverity1.7$"3" <- 0  }
-      if(Missing_ss[i] ==  4)  { tempSDSeverity1.7$"4" <- 0  }
-      if(Missing_ss[i] ==  5)  { tempSDSeverity1.7$"5" <- 0  }
-    }
-    
-    tempSDSeverity1.7$total <- tempSDSeverity1.7$`1`+tempSDSeverity1.7$`3`+tempSDSeverity1.7$`4`+ tempSDSeverity1.7$`5`+tempSDSeverity1.7$`2`
-    tempSDSeverity1.7$SS1 <- tempSDSeverity1.7$`1`/tempSDSeverity1.7$total
-    tempSDSeverity1.7$SS1 <- if(Missing_ss[1]== "1"){ 0 } else {tempSDSeverity1.7$`1`/tempSDSeverity1.7$total}
-    tempSDSeverity1.7$SS2 <- if(Missing_ss[2]== "2"){ 0 } else {tempSDSeverity1.7$`2`/tempSDSeverity1.7$total}
-    tempSDSeverity1.7$SS3 <- if(Missing_ss[3]== "3"){ 0 } else {tempSDSeverity1.7$`3`/tempSDSeverity1.7$total}
-    tempSDSeverity1.7$SS4 <- if(Missing_ss[4]== "4"){ 0 } else {tempSDSeverity1.7$`4`/tempSDSeverity1.7$total}
-    tempSDSeverity1.7$SS5 <- if(Missing_ss[5]== "5"){ 0 } else {tempSDSeverity1.7$`5`/tempSDSeverity1.7$total}
-    tempSDSeverity1.7$SST <- tempSDSeverity1.7$SS1 + tempSDSeverity1.7$SS2 + tempSDSeverity1.7$SS3 + tempSDSeverity1.7$SS4 + tempSDSeverity1.7$SS5
-    
-   
-   # =IF(BB4>0.1,"",IF(BA4>=0.25,4,IF(SUM(AZ4:BA4)>=0.25,3,1)))
-    
-    
-    #TO be verfied with UMAR
-    tempSDSeverity1.7$SSSD1.7 <- ifelse(tempSDSeverity1.7$SS5> 0.25, 5,
-                                        ifelse(tempSDSeverity1.7$SS5+tempSDSeverity1.7$SS4> 0.25, 4,
-                                               ifelse(tempSDSeverity1.7$SS5+tempSDSeverity1.7$SS4+tempSDSeverity1.7$SS3> 0.25, 3,
-                                                      ifelse(tempSDSeverity1.7$SS5+tempSDSeverity1.7$SS4+tempSDSeverity1.7$SS3+tempSDSeverity1.7$SS2>0.25, 2,
-                                                             ifelse(tempSDSeverity1.7$SS5+tempSDSeverity1.7$SS4+tempSDSeverity1.7$SS3+tempSDSeverity1.7$SS2+tempSDSeverity1.7$SS1>0.25, 1,1
-                                                             )))))
-    
-    tempSDSeverity1.7$PINRatio <- tempSDSeverity1.7$SS5+tempSDSeverity1.7$SS4+tempSDSeverity1.7$SS3
-    }
-  
-  
-  
-
-  
-  
-  
 }
+
+# Severity Scoring at Sub District level ----
+{
+  ## Summarizing at Sub District level -----
+      {
   
-## Summarizing SS at Sub District level -----
+        ### Indicator 1.1 - Water safety FRC_SS----
+        {
+          #  PiNSeverityData$IndicatorFRC_SS[PiNSeverityData$IndicatorFRC_SS=="5"]  <- "2"
+          
+          aunique<- unique(PiNSeverityData$IndicatorFRC_SS)
+          #check if SS 1, 2, 3, 4, 5 are all exist
+  
+          Missing_ss <- c("","","","","")
+ 
+          for(i in 1:5){
+              if(length(grep(as.character(i), aunique,ignore.case = TRUE)) == 0){
+                Missing_ss[i] <- c(i)
+              }
+            }
+        
+
+          tempSDSeverity1.1 <- PiNSeverityData %>% 
+                    group_by(admin3PCode,
+                    IndicatorFRC_SS) %>% 
+          summarise(FRCSS = sum(Weight,na.rm = TRUE))
+          
+          tempSDSeverity1.1 <- dcast(tempSDSeverity1.1,admin3PCode ~ tempSDSeverity1.1$IndicatorFRC_SS, value.var="FRCSS", fun.aggregate=sum )
+          
+          for(i in 1:5)
+          {
+            if(Missing_ss[i] ==  1)  { tempSDSeverity1.1$"1" <- 0  }
+            if(Missing_ss[i] ==  2)  { tempSDSeverity1.1$"2" <- 0  }
+            if(Missing_ss[i] ==  3)  { tempSDSeverity1.1$"3" <- 0  }
+            if(Missing_ss[i] ==  4)  { tempSDSeverity1.1$"4" <- 0  }
+            if(Missing_ss[i] ==  5)  { tempSDSeverity1.1$"5" <- 0  }
+          }
+  
+          tempSDSeverity1.1$total <- tempSDSeverity1.1$`1`+tempSDSeverity1.1$`3`+tempSDSeverity1.1$`4`+ tempSDSeverity1.1$`5`+ tempSDSeverity1.1$`2`
+          
+          tempSDSeverity1.1$SS1 <- tempSDSeverity1.1$`1`/tempSDSeverity1.1$total
+          tempSDSeverity1.1$SS1 <- if(Missing_ss[1]== "1"){ 0 } else {tempSDSeverity1.1$`1`/tempSDSeverity1.1$total}
+          tempSDSeverity1.1$SS2 <- if(Missing_ss[2]== "2"){ 0 } else {tempSDSeverity1.1$`2`/tempSDSeverity1.1$total}
+          tempSDSeverity1.1$SS3 <- if(Missing_ss[3]== "3"){ 0 } else {tempSDSeverity1.1$`3`/tempSDSeverity1.1$total}
+          tempSDSeverity1.1$SS4 <- if(Missing_ss[4]== "4"){ 0 } else {tempSDSeverity1.1$`4`/tempSDSeverity1.1$total}
+          tempSDSeverity1.1$SS5 <- if(Missing_ss[5]== "5"){ 0 } else {tempSDSeverity1.1$`5`/tempSDSeverity1.1$total}
+          tempSDSeverity1.1$SST <- tempSDSeverity1.1$SS1 + tempSDSeverity1.1$SS2 + tempSDSeverity1.1$SS3 + tempSDSeverity1.1$SS4 + tempSDSeverity1.1$SS5
+          
+          
+          #=IF(F21>0.1,"",IF(GETPIVOTDATA("hh.weights",$A$2,"A.9 Sub- District","SY010000","Indicator 1.1 FRC","")>0.1,""
+          # ,IF(E21>=0.25,5,
+          #  IF(SUM(D21:E21)>=0.25,4,
+          #  IF(SUM(C21:E21)>=0.25,3,1)))))
+          
+          tempSDSeverity1.1$SSSD1.1 <- ifelse(tempSDSeverity1.1$SS5> 0.25, 5,
+            ifelse(tempSDSeverity1.1$SS5+tempSDSeverity1.1$SS4> 0.25, 4,
+                   ifelse(tempSDSeverity1.1$SS5+tempSDSeverity1.1$SS4+tempSDSeverity1.1$SS3> 0.25, 3,
+                          ifelse(tempSDSeverity1.1$SS5+tempSDSeverity1.1$SS4+tempSDSeverity1.1$SS3+tempSDSeverity1.1$SS2>0.25, 2,
+                                 ifelse(tempSDSeverity1.1$SS5+tempSDSeverity1.1$SS4+tempSDSeverity1.1$SS3+tempSDSeverity1.1$SS2+tempSDSeverity1.1$SS1>0.25, 1,1
+                                 )))))
+            
+          tempSDSeverity1.1$PINRatio <- tempSDSeverity1.1$SS5+tempSDSeverity1.1$SS4+tempSDSeverity1.1$SS3
+
+        } #close indicator 1.1
+        
+    
+        ### Indicator 1.2 - Water Sufficiency ----
+        {#PiNSeverityData$IndicatorWaterSufficiency_SS
+          
+          aunique<- unique(PiNSeverityData$IndicatorWaterSufficiency_SS)
+          #check if SS 1, 2, 3, 4, 5 are all exist
+          
+          Missing_ss <- c("","","","","")
+          
+          for(i in 1:5){
+            if(length(grep(as.character(i), aunique,ignore.case = TRUE)) == 0){
+              Missing_ss[i] <- c(i)
+            }
+          }
+          
+          
+          
+          tempSDSeverity1.2 <- PiNSeverityData %>% 
+            group_by(admin3PCode,
+                     IndicatorWaterSufficiency_SS) %>% 
+            summarise(WaterSufficiency = sum(Weight,na.rm = TRUE))
+          
+          
+          
+          tempSDSeverity1.2 <- dcast(tempSDSeverity1.2,admin3PCode ~ tempSDSeverity1.2$IndicatorWaterSufficiency_SS, value.var="WaterSufficiency", fun.aggregate=sum )
+          
+          
+          for(i in 1:5)
+            {
+            if(Missing_ss[i] ==  1)  { tempSDSeverity1.2$"1" <- 0  }
+            if(Missing_ss[i] ==  2)  { tempSDSeverity1.2$"2" <- 0  }
+            if(Missing_ss[i] ==  3)  { tempSDSeverity1.2$"3" <- 0  }
+            if(Missing_ss[i] ==  4)  { tempSDSeverity1.2$"4" <- 0  }
+            if(Missing_ss[i] ==  5)  { tempSDSeverity1.2$"5" <- 0  }
+          }
+          
+          
+       
+          tempSDSeverity1.2$total <- tempSDSeverity1.2$`1`+tempSDSeverity1.2$`3`+tempSDSeverity1.2$`4`+ tempSDSeverity1.2$`5`+tempSDSeverity1.2$`2`
+          tempSDSeverity1.2$SS1 <- tempSDSeverity1.2$`1`/tempSDSeverity1.2$total
+          tempSDSeverity1.2$SS1 <- if(Missing_ss[1]== "1"){ 0 } else {tempSDSeverity1.2$`1`/tempSDSeverity1.2$total}
+          tempSDSeverity1.2$SS2 <- if(Missing_ss[2]== "2"){ 0 } else {tempSDSeverity1.2$`2`/tempSDSeverity1.2$total}
+          tempSDSeverity1.2$SS3 <- if(Missing_ss[3]== "3"){ 0 } else {tempSDSeverity1.2$`3`/tempSDSeverity1.2$total}
+          tempSDSeverity1.2$SS4 <- if(Missing_ss[4]== "4"){ 0 } else {tempSDSeverity1.2$`4`/tempSDSeverity1.2$total}
+          tempSDSeverity1.2$SS5 <- if(Missing_ss[5]== "5"){ 0 } else {tempSDSeverity1.2$`5`/tempSDSeverity1.2$total}
+          tempSDSeverity1.2$SST <- tempSDSeverity1.2$SS1 + tempSDSeverity1.2$SS2 + tempSDSeverity1.2$SS3 + tempSDSeverity1.2$SS4 + tempSDSeverity1.2$SS5
+          
+          
+          #IF(N4>=0.25,5,IF(SUM(M4:N4)>=0.25,4,IF(SUM(L4:N4)>=0.25,3,1)))
+          
+          
+          
+          tempSDSeverity1.2$SSSD1.2 <- ifelse(tempSDSeverity1.2$SS5> 0.25, 5,
+                                            ifelse(tempSDSeverity1.2$SS5+tempSDSeverity1.2$SS4> 0.25, 4,
+                                                   ifelse(tempSDSeverity1.2$SS5+tempSDSeverity1.2$SS4+tempSDSeverity1.2$SS3> 0.25, 3,
+                                                          ifelse(tempSDSeverity1.2$SS5+tempSDSeverity1.2$SS4+tempSDSeverity1.2$SS3+tempSDSeverity1.2$SS2>0.25, 2,
+                                                                 ifelse(tempSDSeverity1.2$SS5+tempSDSeverity1.2$SS4+tempSDSeverity1.2$SS3+tempSDSeverity1.2$SS2+tempSDSeverity1.2$SS1>0.25, 1,1
+                                                                 )))))
+          
+          
+          tempSDSeverity1.2$PINRatio <- tempSDSeverity1.2$SS5+tempSDSeverity1.2$SS4+tempSDSeverity1.2$SS3
+        }
+        
+        
+        ### Indicator 1.3 - Hygiene items ----
+        {
+          
+          
+          aunique<- unique(PiNSeverityData$IndicatorHygiene_Access_SS)
+          #check if SS 1, 2, 3, 4, 5 are all exist
+          Missing_ss <- c("","","","","")
+          
+          for(i in 1:5){
+            if(length(grep(as.character(i), aunique,ignore.case = TRUE)) == 0){
+              Missing_ss[i] <- c(i)
+            }
+          }
+          
+          tempSDSeverity1.3 <- PiNSeverityData %>% 
+            group_by(admin3PCode,
+                     IndicatorHygiene_Access_SS) %>% 
+            summarise(HygineAccess = sum(Weight,na.rm = TRUE))
+          tempSDSeverity1.3 <- dcast(tempSDSeverity1.3,admin3PCode ~ tempSDSeverity1.3$IndicatorHygiene_Access_SS, value.var="HygineAccess", fun.aggregate=sum )
+          
+          for(i in 1:5)
+          {
+            if(Missing_ss[i] ==  1)  { tempSDSeverity1.3$"1" <- 0  }
+            if(Missing_ss[i] ==  2)  { tempSDSeverity1.3$"2" <- 0  }
+            if(Missing_ss[i] ==  3)  { tempSDSeverity1.3$"3" <- 0  }
+            if(Missing_ss[i] ==  4)  { tempSDSeverity1.3$"4" <- 0  }
+            if(Missing_ss[i] ==  5)  { tempSDSeverity1.3$"5" <- 0  }
+          }
+          
+          tempSDSeverity1.3$total <- tempSDSeverity1.3$`1`+tempSDSeverity1.3$`3`+tempSDSeverity1.3$`4`+ tempSDSeverity1.3$`5`+tempSDSeverity1.3$`2`
+          tempSDSeverity1.3$SS1 <- tempSDSeverity1.3$`1`/tempSDSeverity1.3$total
+          tempSDSeverity1.3$SS1 <- if(Missing_ss[1]== "1"){ 0 } else {tempSDSeverity1.3$`1`/tempSDSeverity1.3$total}
+          tempSDSeverity1.3$SS2 <- if(Missing_ss[2]== "2"){ 0 } else {tempSDSeverity1.3$`2`/tempSDSeverity1.3$total}
+          tempSDSeverity1.3$SS3 <- if(Missing_ss[3]== "3"){ 0 } else {tempSDSeverity1.3$`3`/tempSDSeverity1.3$total}
+          tempSDSeverity1.3$SS4 <- if(Missing_ss[4]== "4"){ 0 } else {tempSDSeverity1.3$`4`/tempSDSeverity1.3$total}
+          tempSDSeverity1.3$SS5 <- if(Missing_ss[5]== "5"){ 0 } else {tempSDSeverity1.3$`5`/tempSDSeverity1.3$total}
+          tempSDSeverity1.3$SST <- tempSDSeverity1.3$SS1 + tempSDSeverity1.3$SS2 + tempSDSeverity1.3$SS3 + tempSDSeverity1.3$SS4 + tempSDSeverity1.3$SS5
+          
+          #IF(N4>=0.25,5,IF(SUM(M4:N4)>=0.25,4,IF(SUM(L4:N4)>=0.25,3,1)))
+          tempSDSeverity1.3$SSSD1.3 <- ifelse(tempSDSeverity1.3$SS5> 0.25, 5,
+                                            ifelse(tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4> 0.25, 4,
+                                                   ifelse(tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4+tempSDSeverity1.3$SS3> 0.25, 3,
+                                                          ifelse(tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4+tempSDSeverity1.3$SS3+tempSDSeverity1.3$SS2>0.25, 2,
+                                                                 ifelse(tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4+tempSDSeverity1.3$SS3+tempSDSeverity1.3$SS2+tempSDSeverity1.3$SS1>0.25, 1,1
+                                                                 )))))
+          tempSDSeverity1.3$PINRatio <- tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4+tempSDSeverity1.3$SS3  
+        }
+        
+        
+        ### Indicator 1.4 - Solid Waste ----
+        {
+          
+          aunique<- unique(PiNSeverityData$IndicatorSolidWaste_SS)
+          #check if SS 1, 2, 3, 4, 5 are all exist
+          Missing_ss <- c("","","","","")
+          
+          for(i in 1:5){
+            if(length(grep(as.character(i), aunique,ignore.case = TRUE)) == 0){
+              Missing_ss[i] <- c(i)
+            }
+          }
+          
+          tempSDSeverity1.4 <- PiNSeverityData %>% 
+            group_by(admin3PCode,
+                     IndicatorSolidWaste_SS) %>% 
+            summarise(SolidWaste = sum(Weight,na.rm = TRUE))
+          tempSDSeverity1.4 <- dcast(tempSDSeverity1.4,admin3PCode ~ tempSDSeverity1.4$IndicatorSolidWaste_SS, value.var="SolidWaste", fun.aggregate=sum )
+          
+          for(i in 1:5)
+          {
+            if(Missing_ss[i] ==  1)  { tempSDSeverity1.4$"1" <- 0  }
+            if(Missing_ss[i] ==  2)  { tempSDSeverity1.4$"2" <- 0  }
+            if(Missing_ss[i] ==  3)  { tempSDSeverity1.4$"3" <- 0  }
+            if(Missing_ss[i] ==  4)  { tempSDSeverity1.4$"4" <- 0  }
+            if(Missing_ss[i] ==  5)  { tempSDSeverity1.4$"5" <- 0  }
+          }
+          
+          tempSDSeverity1.4$total <- tempSDSeverity1.4$`1`+tempSDSeverity1.4$`3`+tempSDSeverity1.4$`4`+ tempSDSeverity1.4$`5`+tempSDSeverity1.4$`2`
+          tempSDSeverity1.4$SS1 <- tempSDSeverity1.4$`1`/tempSDSeverity1.4$total
+          tempSDSeverity1.4$SS1 <- if(Missing_ss[1]== "1"){ 0 } else {tempSDSeverity1.4$`1`/tempSDSeverity1.4$total}
+          tempSDSeverity1.4$SS2 <- if(Missing_ss[2]== "2"){ 0 } else {tempSDSeverity1.4$`2`/tempSDSeverity1.4$total}
+          tempSDSeverity1.4$SS3 <- if(Missing_ss[3]== "3"){ 0 } else {tempSDSeverity1.4$`3`/tempSDSeverity1.4$total}
+          tempSDSeverity1.4$SS4 <- if(Missing_ss[4]== "4"){ 0 } else {tempSDSeverity1.4$`4`/tempSDSeverity1.4$total}
+          tempSDSeverity1.4$SS5 <- if(Missing_ss[5]== "5"){ 0 } else {tempSDSeverity1.4$`5`/tempSDSeverity1.4$total}
+          tempSDSeverity1.4$SST <- tempSDSeverity1.4$SS1 + tempSDSeverity1.4$SS2 + tempSDSeverity1.4$SS3 + tempSDSeverity1.4$SS4 + tempSDSeverity1.4$SS5
+          
+        
+          #=IF(AD4>=0.25,4,IF(SUM(AC4:AD4)>=0.25,3,IF(SUM(AB4:AD4)>=0.25,2,1)))
+          
+          tempSDSeverity1.4$SSSD1.4 <- ifelse(tempSDSeverity1.4$SS5> 0.25, 5,
+                                              ifelse(tempSDSeverity1.4$SS5+tempSDSeverity1.4$SS4> 0.25, 4,
+                                                     ifelse(tempSDSeverity1.4$SS5+tempSDSeverity1.4$SS4+tempSDSeverity1.4$SS3> 0.25, 3,
+                                                            ifelse(tempSDSeverity1.4$SS5+tempSDSeverity1.4$SS4+tempSDSeverity1.4$SS3+tempSDSeverity1.4$SS2>0.25, 2,
+                                                                   ifelse(tempSDSeverity1.4$SS5+tempSDSeverity1.4$SS4+tempSDSeverity3$SS3+tempSDSeverity1.4$SS2+tempSDSeverity1.4$SS1>0.25, 1,1
+                                                                   )))))
+          tempSDSeverity1.4$PINRatio <- tempSDSeverity1.4$SS5+tempSDSeverity1.4$SS4+tempSDSeverity1.4$SS3 
+         }
+        
+        
+        ### Indicator 1.5 - Sanitation Problems ----
+        {
+          
+          aunique<- unique(PiNSeverityData$IndicatorSanitation_Problems_SS)
+          #check if SS 1, 2, 3, 4, 5 are all exist
+          Missing_ss <- c("","","","","")
+          
+          for(i in 1:5){
+            if(length(grep(as.character(i), aunique,ignore.case = TRUE)) == 0){
+              Missing_ss[i] <- c(i)
+            }
+          }
+          
+          tempSDSeverity1.5 <- PiNSeverityData %>% 
+            group_by(admin3PCode,
+                     IndicatorSanitation_Problems_SS) %>% 
+            summarise(SanitationProblems = sum(Weight,na.rm = TRUE))
+          tempSDSeverity1.5 <- dcast(tempSDSeverity1.5,admin3PCode ~ tempSDSeverity1.5$IndicatorSanitation_Problems_SS, value.var="SanitationProblems", fun.aggregate=sum )
+          
+          for(i in 1:5)
+          {
+            if(Missing_ss[i] ==  1)  { tempSDSeverity1.5$"1" <- 0  }
+            if(Missing_ss[i] ==  2)  { tempSDSeverity1.5$"2" <- 0  }
+            if(Missing_ss[i] ==  3)  { tempSDSeverity1.5$"3" <- 0  }
+            if(Missing_ss[i] ==  4)  { tempSDSeverity1.5$"4" <- 0  }
+            if(Missing_ss[i] ==  5)  { tempSDSeverity1.5$"5" <- 0  }
+          }
+          
+          tempSDSeverity1.5$total <- tempSDSeverity1.5$`1`+tempSDSeverity1.5$`3`+tempSDSeverity1.5$`4`+ tempSDSeverity1.5$`5`+tempSDSeverity1.5$`2`
+          tempSDSeverity1.5$SS1 <- tempSDSeverity1.5$`1`/tempSDSeverity1.5$total
+          tempSDSeverity1.5$SS1 <- if(Missing_ss[1]== "1"){ 0 } else {tempSDSeverity1.5$`1`/tempSDSeverity1.5$total}
+          tempSDSeverity1.5$SS2 <- if(Missing_ss[2]== "2"){ 0 } else {tempSDSeverity1.5$`2`/tempSDSeverity1.5$total}
+          tempSDSeverity1.5$SS3 <- if(Missing_ss[3]== "3"){ 0 } else {tempSDSeverity1.5$`3`/tempSDSeverity1.5$total}
+          tempSDSeverity1.5$SS4 <- if(Missing_ss[4]== "4"){ 0 } else {tempSDSeverity1.5$`4`/tempSDSeverity1.5$total}
+          tempSDSeverity1.5$SS5 <- if(Missing_ss[5]== "5"){ 0 } else {tempSDSeverity1.5$`5`/tempSDSeverity1.5$total}
+          tempSDSeverity1.5$SST <- tempSDSeverity1.5$SS1 + tempSDSeverity1.5$SS2 + tempSDSeverity1.5$SS3 + tempSDSeverity1.5$SS4 + tempSDSeverity1.5$SS5
+          
+          
+          #=IF(AD4>=0.25,4,IF(SUM(AC4:AD4)>=0.25,3,IF(SUM(AB4:AD4)>=0.25,2,1)))
+          
+          
+      
+          
+          tempSDSeverity1.5$SSSD1.5 <- ifelse(tempSDSeverity1.5$SS5> 0.25, 5,
+                                              ifelse(tempSDSeverity1.5$SS5+tempSDSeverity1.5$SS4> 0.25, 4,
+                                                     ifelse(tempSDSeverity1.5$SS5+tempSDSeverity1.5$SS4+tempSDSeverity1.5$SS3> 0.25, 3,
+                                                            ifelse(tempSDSeverity1.5$SS5+tempSDSeverity1.5$SS4+tempSDSeverity1.5$SS3+tempSDSeverity1.5$SS2>0.25, 2,
+                                                                   ifelse(tempSDSeverity1.5$SS5+tempSDSeverity1.5$SS4+tempSDSeverity1.5$SS3+tempSDSeverity1.5$SS2+tempSDSeverity1.5$SS1>0.25, 1,1
+                                                                   )))))
+          
+          tempSDSeverity1.5$PINRatio <- tempSDSeverity1.5$SS5+tempSDSeverity1.5$SS4+tempSDSeverity1.5$SS3
+          }
+        
+        
+        
+        ### Indicator 1.6 - WASH spend ----
+        {
+          
+          aunique<- unique(PiNSeverityData$percent_hh_sepend_IN_water_and_Desludging_SS)
+          #check if SS 1, 2, 3, 4, 5 are all exist
+          Missing_ss <- c("","","","","")
+          
+          for(i in 1:5){
+            if(length(grep(as.character(i), aunique,ignore.case = TRUE)) == 0){
+              Missing_ss[i] <- c(i)
+            }
+          }
+          
+          tempSDSeverity1.6 <- PiNSeverityData %>% 
+            group_by(admin3PCode,
+                     percent_hh_sepend_IN_water_and_Desludging_SS) %>% 
+            summarise(HHSpendInWaterDesludging = sum(Weight,na.rm = TRUE))
+          tempSDSeverity1.6 <- dcast(tempSDSeverity1.6,admin3PCode ~ tempSDSeverity1.6$percent_hh_sepend_IN_water_and_Desludging_SS, value.var="HHSpendInWaterDesludging", fun.aggregate=sum )
+          
+          for(i in 1:5)
+          {
+            if(Missing_ss[i] ==  1)  { tempSDSeverity1.6$"1" <- 0  }
+            if(Missing_ss[i] ==  2)  { tempSDSeverity1.6$"2" <- 0  }
+            if(Missing_ss[i] ==  3)  { tempSDSeverity1.6$"3" <- 0  }
+            if(Missing_ss[i] ==  4)  { tempSDSeverity1.6$"4" <- 0  }
+            if(Missing_ss[i] ==  5)  { tempSDSeverity1.6$"5" <- 0  }
+          }
+          
+          tempSDSeverity1.6$total <- tempSDSeverity1.6$`1`+tempSDSeverity1.6$`3`+tempSDSeverity1.6$`4`+ tempSDSeverity1.6$`5`+tempSDSeverity1.6$`2`
+          tempSDSeverity1.6$SS1 <- tempSDSeverity1.6$`1`/tempSDSeverity1.6$total
+          tempSDSeverity1.6$SS1 <- if(Missing_ss[1]== "1"){ 0 } else {tempSDSeverity1.6$`1`/tempSDSeverity1.6$total}
+          tempSDSeverity1.6$SS2 <- if(Missing_ss[2]== "2"){ 0 } else {tempSDSeverity1.6$`2`/tempSDSeverity1.6$total}
+          tempSDSeverity1.6$SS3 <- if(Missing_ss[3]== "3"){ 0 } else {tempSDSeverity1.6$`3`/tempSDSeverity1.6$total}
+          tempSDSeverity1.6$SS4 <- if(Missing_ss[4]== "4"){ 0 } else {tempSDSeverity1.6$`4`/tempSDSeverity1.6$total}
+          tempSDSeverity1.6$SS5 <- if(Missing_ss[5]== "5"){ 0 } else {tempSDSeverity1.6$`5`/tempSDSeverity1.6$total}
+          tempSDSeverity1.6$SST <- tempSDSeverity1.6$SS1 + tempSDSeverity1.6$SS2 + tempSDSeverity1.6$SS3 + tempSDSeverity1.6$SS4 + tempSDSeverity1.6$SS5
+          
+          
+          #=IF(AD4>=0.25,4,IF(SUM(AC4:AD4)>=0.25,3,IF(SUM(AB4:AD4)>=0.25,2,1)))
+          
+          
+          
+          
+          tempSDSeverity1.6$SSSD1.6 <- ifelse(tempSDSeverity1.6$SS5> 0.25, 5,
+                                              ifelse(tempSDSeverity1.6$SS5+tempSDSeverity1.6$SS4> 0.25, 4,
+                                                     ifelse(tempSDSeverity1.6$SS5+tempSDSeverity1.6$SS4+tempSDSeverity1.6$SS3> 0.25, 3,
+                                                            ifelse(tempSDSeverity1.6$SS5+tempSDSeverity1.6$SS4+tempSDSeverity1.6$SS3+tempSDSeverity1.6$SS2>0.25, 2,
+                                                                   ifelse(tempSDSeverity1.6$SS5+tempSDSeverity1.6$SS4+tempSDSeverity1.6$SS3+tempSDSeverity1.6$SS2+tempSDSeverity1.6$SS1>0.25, 1,1
+                                                                   )))))
+          
+          tempSDSeverity1.6$PINRatio <- tempSDSeverity1.6$SS5+tempSDSeverity1.6$SS4+tempSDSeverity1.6$SS3  
+          
+        }
+        
+        
+        
+        
+        ### Indicator 1.7 - Hand washing Observations ----
+        {
+          
+          aunique<- unique(PiNSeverityData$Indicatorhh_handwashing_facilities_SS)
+          #check if SS 1, 2, 3, 4, 5 are all exist
+          Missing_ss <- c("","","","","")
+          
+          for(i in 1:5){
+            if(length(grep(as.character(i), aunique,ignore.case = TRUE)) == 0){
+              Missing_ss[i] <- c(i)
+            }
+          }
+          
+          tempSDSeverity1.7 <- PiNSeverityData %>% 
+            group_by(admin3PCode,
+                     Indicatorhh_handwashing_facilities_SS) %>% 
+            summarise(Handwashingobservation = sum(Weight,na.rm = TRUE))
+          tempSDSeverity1.7 <- dcast(tempSDSeverity1.7,admin3PCode ~ tempSDSeverity1.7$Indicatorhh_handwashing_facilities_SS, value.var="Handwashingobservation", fun.aggregate=sum )
+          
+          for(i in 1:5)
+          {
+            if(Missing_ss[i] ==  1)  { tempSDSeverity1.7$"1" <- 0  }
+            if(Missing_ss[i] ==  2)  { tempSDSeverity1.7$"2" <- 0  }
+            if(Missing_ss[i] ==  3)  { tempSDSeverity1.7$"3" <- 0  }
+            if(Missing_ss[i] ==  4)  { tempSDSeverity1.7$"4" <- 0  }
+            if(Missing_ss[i] ==  5)  { tempSDSeverity1.7$"5" <- 0  }
+          }
+          
+          tempSDSeverity1.7$total <- tempSDSeverity1.7$`1`+tempSDSeverity1.7$`3`+tempSDSeverity1.7$`4`+ tempSDSeverity1.7$`5`+tempSDSeverity1.7$`2`
+          tempSDSeverity1.7$SS1 <- tempSDSeverity1.7$`1`/tempSDSeverity1.7$total
+          tempSDSeverity1.7$SS1 <- if(Missing_ss[1]== "1"){ 0 } else {tempSDSeverity1.7$`1`/tempSDSeverity1.7$total}
+          tempSDSeverity1.7$SS2 <- if(Missing_ss[2]== "2"){ 0 } else {tempSDSeverity1.7$`2`/tempSDSeverity1.7$total}
+          tempSDSeverity1.7$SS3 <- if(Missing_ss[3]== "3"){ 0 } else {tempSDSeverity1.7$`3`/tempSDSeverity1.7$total}
+          tempSDSeverity1.7$SS4 <- if(Missing_ss[4]== "4"){ 0 } else {tempSDSeverity1.7$`4`/tempSDSeverity1.7$total}
+          tempSDSeverity1.7$SS5 <- if(Missing_ss[5]== "5"){ 0 } else {tempSDSeverity1.7$`5`/tempSDSeverity1.7$total}
+          tempSDSeverity1.7$SST <- tempSDSeverity1.7$SS1 + tempSDSeverity1.7$SS2 + tempSDSeverity1.7$SS3 + tempSDSeverity1.7$SS4 + tempSDSeverity1.7$SS5
+          
+         
+         # =IF(BB4>0.1,"",IF(BA4>=0.25,4,IF(SUM(AZ4:BA4)>=0.25,3,1)))
+          
+          
+          #TO be verfied with UMAR
+          tempSDSeverity1.7$SSSD1.7 <- ifelse(tempSDSeverity1.7$SS5> 0.25, 5,
+                                              ifelse(tempSDSeverity1.7$SS5+tempSDSeverity1.7$SS4> 0.25, 4,
+                                                     ifelse(tempSDSeverity1.7$SS5+tempSDSeverity1.7$SS4+tempSDSeverity1.7$SS3> 0.25, 3,
+                                                            ifelse(tempSDSeverity1.7$SS5+tempSDSeverity1.7$SS4+tempSDSeverity1.7$SS3+tempSDSeverity1.7$SS2>0.25, 2,
+                                                                   ifelse(tempSDSeverity1.7$SS5+tempSDSeverity1.7$SS4+tempSDSeverity1.7$SS3+tempSDSeverity1.7$SS2+tempSDSeverity1.7$SS1>0.25, 1,1
+                                                                   )))))
+          
+          tempSDSeverity1.7$PINRatio <- tempSDSeverity1.7$SS5+tempSDSeverity1.7$SS4+tempSDSeverity1.7$SS3
+          }
+        
+        
+        
+      
+        
+        
+        
+      }
+  
+  ## Summarizing SS at Sub District level -----
     
     {
       
@@ -999,30 +982,30 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
         group_by(admin3PCode) %>% 
         summarise(sumUUID = sum(Weight,na.rm = TRUE))
       
-    tempSDSeverity1.1 = subset(tempSDSeverity1.1, select = c(admin3PCode,SSSD1.1))
-    
-    
-    PiNSeverityDataSS<- merge(PiNSeverityDataSS, tempSDSeverity1.1, by="admin3PCode")
-    
-    
-    tempSDSeverity1.2 = subset(tempSDSeverity1.2, select = c(admin3PCode,SSSD1.2))
-    PiNSeverityDataSS<- merge(PiNSeverityDataSS, tempSDSeverity1.2, by="admin3PCode")
-    
-    tempSDSeverity1.3 = subset(tempSDSeverity1.3, select = c(admin3PCode,SSSD1.3))
-    PiNSeverityDataSS<- merge(PiNSeverityDataSS, tempSDSeverity1.3, by="admin3PCode")
-    
-    tempSDSeverity1.4 = subset(tempSDSeverity1.4, select = c(admin3PCode,SSSD1.4))
-    PiNSeverityDataSS<- merge(PiNSeverityDataSS, tempSDSeverity1.4, by="admin3PCode")
-    
-    tempSDSeverity1.5 = subset(tempSDSeverity1.5, select = c(admin3PCode,SSSD1.5))
-    PiNSeverityDataSS<- merge(PiNSeverityDataSS, tempSDSeverity1.5, by="admin3PCode")
-    
-    tempSDSeverity1.6 = subset(tempSDSeverity1.6, select = c(admin3PCode,SSSD1.6))
-    PiNSeverityDataSS<- merge(PiNSeverityDataSS, tempSDSeverity1.6, by="admin3PCode")
-    
-    
-    tempSDSeverity1.7 = subset(tempSDSeverity1.7, select = c(admin3PCode,SSSD1.7))
-    PiNSeverityDataSS<- merge(PiNSeverityDataSS, tempSDSeverity1.7, by="admin3PCode")
+        tempSDSeverity1.1 = subset(tempSDSeverity1.1, select = c(admin3PCode,SSSD1.1))
+        
+        
+        PiNSeverityDataSS<- merge(PiNSeverityDataSS, tempSDSeverity1.1, by="admin3PCode")
+        
+        
+        tempSDSeverity1.2 = subset(tempSDSeverity1.2, select = c(admin3PCode,SSSD1.2))
+        PiNSeverityDataSS<- merge(PiNSeverityDataSS, tempSDSeverity1.2, by="admin3PCode")
+        
+        tempSDSeverity1.3 = subset(tempSDSeverity1.3, select = c(admin3PCode,SSSD1.3))
+        PiNSeverityDataSS<- merge(PiNSeverityDataSS, tempSDSeverity1.3, by="admin3PCode")
+        
+        tempSDSeverity1.4 = subset(tempSDSeverity1.4, select = c(admin3PCode,SSSD1.4))
+        PiNSeverityDataSS<- merge(PiNSeverityDataSS, tempSDSeverity1.4, by="admin3PCode")
+        
+        tempSDSeverity1.5 = subset(tempSDSeverity1.5, select = c(admin3PCode,SSSD1.5))
+        PiNSeverityDataSS<- merge(PiNSeverityDataSS, tempSDSeverity1.5, by="admin3PCode")
+        
+        tempSDSeverity1.6 = subset(tempSDSeverity1.6, select = c(admin3PCode,SSSD1.6))
+        PiNSeverityDataSS<- merge(PiNSeverityDataSS, tempSDSeverity1.6, by="admin3PCode")
+        
+        
+        tempSDSeverity1.7 = subset(tempSDSeverity1.7, select = c(admin3PCode,SSSD1.7))
+        PiNSeverityDataSS<- merge(PiNSeverityDataSS, tempSDSeverity1.7, by="admin3PCode")
     
     
     }
@@ -1044,3 +1027,5 @@ write.csv(PiNSeverityData,"C:\\Users\\udaraz\\OneDrive - UNICEF\\WASH_WoS_Sector
 
 
 
+
+}
