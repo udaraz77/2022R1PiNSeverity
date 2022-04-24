@@ -571,7 +571,67 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
     }
     
     
-  }
+## Indicator 2.1 WBD Proportionate morbidity ----
+    {PiNSeverityData$indicator2.1wbd<-1}
+## Indicator 2.2 % IDPs in SD" ----
+    {PiNSeverityData$indicator2.2IDP<-1}
+    
+    
+##Aggregated HH Severity ----
+    ##ROUNDUP(AVERAGE(LARGE(WASH__Data[@[Indicator 1.1 FRC]:[Indicator 2.2 % IDPs in SD]],{1,2,3,4,5})),0)
+    
+    
+    
+    {
+      
+      PiNSeverityData$IndicatorFRC_SS<- as.double(PiNSeverityData$IndicatorFRC_SS)
+      PiNSeverityData$IndicatorWaterSufficiency_SS<- as.double(PiNSeverityData$IndicatorWaterSufficiency_SS)
+      PiNSeverityData$IndicatorHygiene_Access_SS<- as.double(PiNSeverityData$IndicatorHygiene_Access_SS)
+      PiNSeverityData$IndicatorSolidWaste_SS<- as.double(PiNSeverityData$IndicatorSolidWaste_SS)
+      PiNSeverityData$IndicatorSanitation_Problems_SS<- as.double(PiNSeverityData$IndicatorSanitation_Problems_SS)
+      PiNSeverityData$percent_hh_sepend_IN_water_and_Desludging_SS<- as.double(PiNSeverityData$percent_hh_sepend_IN_water_and_Desludging_SS)
+      PiNSeverityData$Indicatorhh_handwashing_facilities_SS<- as.double(PiNSeverityData$Indicatorhh_handwashing_facilities_SS)
+      PiNSeverityData$indicator2.1wbd<- as.double(PiNSeverityData$indicator2.1wbd)
+      PiNSeverityData$indicator2.2IDP<- as.double(PiNSeverityData$indicator2.2IDP)
+
+      # without camps
+      
+PiNSeverityData <- PiNSeverityData %>% 
+  rowwise() %>% 
+  mutate(Aggregated_HH_Severity_withoutcamps = mean(sort(c(IndicatorFRC_SS, 
+                                              IndicatorWaterSufficiency_SS, 
+                                              IndicatorHygiene_Access_SS,
+                                              IndicatorSolidWaste_SS,
+                                              IndicatorSanitation_Problems_SS,
+                                              percent_hh_sepend_IN_water_and_Desludging_SS,
+                                              Indicatorhh_handwashing_facilities_SS, 
+                                              indicator2.1wbd), 
+                                              decreasing = TRUE)[1:5], na.rm = TRUE)) %>% 
+                                              ungroup()
+# with camps
+  
+PiNSeverityData <- PiNSeverityData %>% 
+  rowwise() %>% 
+  mutate(Aggregated_HH_Severity_includingcapms = mean(sort(c(IndicatorFRC_SS, 
+                                              IndicatorWaterSufficiency_SS, 
+                                              IndicatorHygiene_Access_SS,
+                                              IndicatorSolidWaste_SS,
+                                              IndicatorSanitation_Problems_SS,
+                                              percent_hh_sepend_IN_water_and_Desludging_SS,
+                                              Indicatorhh_handwashing_facilities_SS, 
+                                              indicator2.1wbd, 
+                                              indicator2.2IDP), 
+                                            decreasing = TRUE)[1:5], na.rm = TRUE)) %>% 
+  ungroup()
+
+
+  
+
+      
+    }
+    
+    
+    }
 
 }
 
