@@ -30,6 +30,7 @@
   RData_JanuaryBaseline <- read.csv(paste(filepath,"WASH_HH_Survey_Dataset_Feb_2022_JanuaryBaseline.csv",sep=""),encoding = "UTF-8")
   RData_VariableFullNames <- read.csv(paste(filepath,"WASH_HH_Survey_Dataset_Feb_2022_VariablesFullName.csv",sep=""),encoding = "UTF-8")
   RData_VariableDataOptions <- read.csv(paste(filepath,"WASH_HH_Survey_Dataset_Feb_2022_VariableDataOptions.csv",sep=""),encoding = "UTF-8")
+  RData_PopAug2021 <- read.csv(paste(filepath,"OCHA_PTF_PopAug_2022.csv",sep=""),encoding = "UTF-8")
   rm(filepath)
 }
     
@@ -696,6 +697,19 @@ PiNSeverityData <- PiNSeverityData %>%
                                  )))))
             
           tempSDSeverity1.1$PINRatio <- tempSDSeverity1.1$SS5+tempSDSeverity1.1$SS4+tempSDSeverity1.1$SS3
+          
+          tempSDSeverity1.1 <- tempSDSeverity1.1[nzchar(tempSDSeverity1.1$admin3PCode),]
+          
+          # Calculating PiN
+          # Step 1: add SD Population in empSDSeverity1.1 dataframe
+          {
+            tempSDSeverity1.1 <-tempSDSeverity1.1 %>% 
+              left_join(RData_PopAug2021, by = c("admin3PCode" = "admin3Pcode"))%>%
+              rename(PopAug2021 = Final.Est.of.total.Pop..Aug.2021.) %>% 
+              select(-(17:27))
+            tempSDSeverity1.1$PiN <- tempSDSeverity1.1$PINRatio * tempSDSeverity1.1$PopAug2021
+          }
+          sum(tempSDSeverity1.1$PiN, na.rm = TRUE)
 
         } #close indicator 1.1
         
@@ -760,6 +774,9 @@ PiNSeverityData <- PiNSeverityData %>%
           
           
           tempSDSeverity1.2$PINRatio <- tempSDSeverity1.2$SS5+tempSDSeverity1.2$SS4+tempSDSeverity1.2$SS3
+          
+
+          
         }
         
         
@@ -1089,3 +1106,4 @@ write.csv(PiNSeverityData,"C:\\Users\\udaraz\\OneDrive - UNICEF\\WASH_WoS_Sector
 
 
 }
+
