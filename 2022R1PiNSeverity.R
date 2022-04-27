@@ -31,6 +31,7 @@
   RData_VariableFullNames <- read.csv(paste(filepath,"WASH_HH_Survey_Dataset_Feb_2022_VariablesFullName.csv",sep=""),encoding = "UTF-8")
   RData_VariableDataOptions <- read.csv(paste(filepath,"WASH_HH_Survey_Dataset_Feb_2022_VariableDataOptions.csv",sep=""),encoding = "UTF-8")
   RData_PopAug2021 <- read.csv(paste(filepath,"OCHA_PTF_PopAug_2022.csv",sep=""),encoding = "UTF-8")
+  
   rm(filepath)
 }
     
@@ -254,6 +255,16 @@
   
   # W.7.1. How much your HH spent in the past 30 days on purchasing water? (in SYP) (Specify)
   PiNSeverityData$hh_MoneySpent_purchasing_Water<- RData_Main$W7_1
+  
+  
+  
+  # preparing population data at admin3 level
+  
+  RData_PopAug2021 = subset(RData_PopAug2021, select = c(admin3Pcode ,Final.Est.of.total.Pop..Aug.2021.))
+  names(RData_PopAug2021)[1] <- 'admin3PCode'
+  names(RData_PopAug2021)[2] <- 'PopAug2021'
+  
+  
   }
 
 
@@ -576,7 +587,7 @@ PiNSeverityData$percent_hh_sepend_Desludging <- ifelse(
     {PiNSeverityData$indicator2.1wbd<-1}
 ## Indicator 2.2 % IDPs in SD" ----
     {PiNSeverityData$indicator2.2IDP<-1}
-    
+  }
     
 ##Aggregated HH Severity ----
     ##ROUNDUP(AVERAGE(LARGE(WASH__Data[@[Indicator 1.1 FRC]:[Indicator 2.2 % IDPs in SD]],{1,2,3,4,5})),0)
@@ -634,13 +645,19 @@ PiNSeverityData <- PiNSeverityData %>%
     
     }
 
-}
+
 
 # Severity Scoring at Sub District level ----
 {
   ## Summarizing at Sub District level -----
       {
-  
+        
+        
+        
+        
+        
+        
+        
         ### Indicator 1.1 - Water safety FRC_SS----
         {
           #  PiNSeverityData$IndicatorFRC_SS[PiNSeverityData$IndicatorFRC_SS=="5"]  <- "2"
@@ -698,48 +715,52 @@ PiNSeverityData <- PiNSeverityData %>%
             
           tempSDSeverity1.1$PINRatio <- tempSDSeverity1.1$SS5+tempSDSeverity1.1$SS4+tempSDSeverity1.1$SS3
           
+          # replacing na with 0
+          tempSDSeverity1.1[is.na(tempSDSeverity1.1)] = 0
+          
           tempSDSeverity1.1 <- tempSDSeverity1.1[nzchar(tempSDSeverity1.1$admin3PCode),]
           
+
           # Calculating PiN
           # Step 1: add SD Population in empSDSeverity1.1 dataframe
-          {
-            tempSDSeverity1.1 <-tempSDSeverity1.1 %>% 
-              left_join(RData_PopAug2021, by = c("admin3PCode" = "admin3Pcode"))%>%
-              rename(PopAug2021 = Final.Est.of.total.Pop..Aug.2021.) %>% 
-              select(-(17:27))
-            tempSDSeverity1.1$PiN <- tempSDSeverity1.1$PINRatio * tempSDSeverity1.1$PopAug2021
-          }
+          #{
+              # tempSDSeverity1.1 <- tempSDSeverity1.1 %>% 
+              # left_join(RData_PopAug2021, by = c("admin3PCode" = "admin3Pcode"))%>%
+              # rename(PopAug2021 = Final.Est.of.total.Pop..Aug.2021.) %>% 
+              # select(-(17:27))
+            # tempSDSeverity1.1$PiN <- tempSDSeverity1.1$PINRatio * tempSDSeverity1.1$PopAug2021
+          #}
+          
+          
+          tempSDSeverity1.1<- merge(tempSDSeverity1.1, RData_PopAug2021, by="admin3PCode")
+          tempSDSeverity1.1$PiN <- tempSDSeverity1.1$PINRatio * tempSDSeverity1.1$PopAug2021
           sum(tempSDSeverity1.1$PiN, na.rm = TRUE)
 
-        } #close indicator 1.1
+        } 
         
-    
-        ### Indicator 1.2 - Water Sufficiency ----
-        {#PiNSeverityData$IndicatorWaterSufficiency_SS
-          
+        
+        
+        # ### Indicator 1.2 - Water Sufficiency ----
+        { #PiNSeverityData$IndicatorWaterSufficiency_SS
+
           aunique<- unique(PiNSeverityData$IndicatorWaterSufficiency_SS)
           #check if SS 1, 2, 3, 4, 5 are all exist
-          
           Missing_ss <- c("","","","","")
-          
+
           for(i in 1:5){
             if(length(grep(as.character(i), aunique,ignore.case = TRUE)) == 0){
               Missing_ss[i] <- c(i)
             }
           }
-          
-          
-          
-          tempSDSeverity1.2 <- PiNSeverityData %>% 
-            group_by(admin3PCode,
-                     IndicatorWaterSufficiency_SS) %>% 
-            summarise(WaterSufficiency = sum(Weight,na.rm = TRUE))
-          
-          
-          
+
+          tempSDSeverity1.2 <- PiNSeverityData %>%
+          group_by(admin3PCode,
+                   IndicatorWaterSufficiency_SS) %>%
+          summarise(WaterSufficiency = sum(Weight,na.rm = TRUE))
+
           tempSDSeverity1.2 <- dcast(tempSDSeverity1.2,admin3PCode ~ tempSDSeverity1.2$IndicatorWaterSufficiency_SS, value.var="WaterSufficiency", fun.aggregate=sum )
-          
-          
+
+
           for(i in 1:5)
             {
             if(Missing_ss[i] ==  1)  { tempSDSeverity1.2$"1" <- 0  }
@@ -748,9 +769,9 @@ PiNSeverityData <- PiNSeverityData %>%
             if(Missing_ss[i] ==  4)  { tempSDSeverity1.2$"4" <- 0  }
             if(Missing_ss[i] ==  5)  { tempSDSeverity1.2$"5" <- 0  }
           }
-          
-          
-       
+
+
+
           tempSDSeverity1.2$total <- tempSDSeverity1.2$`1`+tempSDSeverity1.2$`3`+tempSDSeverity1.2$`4`+ tempSDSeverity1.2$`5`+tempSDSeverity1.2$`2`
           tempSDSeverity1.2$SS1 <- tempSDSeverity1.2$`1`/tempSDSeverity1.2$total
           tempSDSeverity1.2$SS1 <- if(Missing_ss[1]== "1"){ 0 } else {tempSDSeverity1.2$`1`/tempSDSeverity1.2$total}
@@ -759,47 +780,61 @@ PiNSeverityData <- PiNSeverityData %>%
           tempSDSeverity1.2$SS4 <- if(Missing_ss[4]== "4"){ 0 } else {tempSDSeverity1.2$`4`/tempSDSeverity1.2$total}
           tempSDSeverity1.2$SS5 <- if(Missing_ss[5]== "5"){ 0 } else {tempSDSeverity1.2$`5`/tempSDSeverity1.2$total}
           tempSDSeverity1.2$SST <- tempSDSeverity1.2$SS1 + tempSDSeverity1.2$SS2 + tempSDSeverity1.2$SS3 + tempSDSeverity1.2$SS4 + tempSDSeverity1.2$SS5
-          
-          
+
+
           #IF(N4>=0.25,5,IF(SUM(M4:N4)>=0.25,4,IF(SUM(L4:N4)>=0.25,3,1)))
-          
-          
-          
           tempSDSeverity1.2$SSSD1.2 <- ifelse(tempSDSeverity1.2$SS5> 0.25, 5,
                                             ifelse(tempSDSeverity1.2$SS5+tempSDSeverity1.2$SS4> 0.25, 4,
                                                    ifelse(tempSDSeverity1.2$SS5+tempSDSeverity1.2$SS4+tempSDSeverity1.2$SS3> 0.25, 3,
                                                           ifelse(tempSDSeverity1.2$SS5+tempSDSeverity1.2$SS4+tempSDSeverity1.2$SS3+tempSDSeverity1.2$SS2>0.25, 2,
                                                                  ifelse(tempSDSeverity1.2$SS5+tempSDSeverity1.2$SS4+tempSDSeverity1.2$SS3+tempSDSeverity1.2$SS2+tempSDSeverity1.2$SS1>0.25, 1,1
                                                                  )))))
-          
-          
+
+
           tempSDSeverity1.2$PINRatio <- tempSDSeverity1.2$SS5+tempSDSeverity1.2$SS4+tempSDSeverity1.2$SS3
+          tempSDSeverity1.2[is.na(tempSDSeverity1.2)] = 0
           
+          #new line has been added to remove blank admin3PCode rows
+          tempSDSeverity1.2 <- filter(tempSDSeverity1.2, !is.na(admin3PCode),admin3PCode!="" )
+          tempSDSeverity1.2 <- tempSDSeverity1.2[nzchar(tempSDSeverity1.2$admin3PCode),]
 
           
-        }
-        
-        
+          
+          
+          
+          
+          # Calculating PiN
+          # # Step 1: add SD Population in empSDSeverity1.2 dataframe
+
+          tempSDSeverity1.2<- merge(tempSDSeverity1.2, RData_PopAug2021, by="admin3PCode")
+          tempSDSeverity1.2$PiN <- tempSDSeverity1.2$PINRatio * tempSDSeverity1.2$PopAug2021
+          sum(tempSDSeverity1.2$PiN, na.rm = TRUE)
+
+      }    
+      
         ### Indicator 1.3 - Hygiene items ----
         {
-          
-          
           aunique<- unique(PiNSeverityData$IndicatorHygiene_Access_SS)
           #check if SS 1, 2, 3, 4, 5 are all exist
           Missing_ss <- c("","","","","")
-          
+
           for(i in 1:5){
             if(length(grep(as.character(i), aunique,ignore.case = TRUE)) == 0){
               Missing_ss[i] <- c(i)
             }
           }
-          
-          tempSDSeverity1.3 <- PiNSeverityData %>% 
+
+          tempSDSeverity1.3 <- PiNSeverityData %>%
             group_by(admin3PCode,
-                     IndicatorHygiene_Access_SS) %>% 
+                     IndicatorHygiene_Access_SS) %>%
+
             summarise(HygineAccess = sum(Weight,na.rm = TRUE))
           tempSDSeverity1.3 <- dcast(tempSDSeverity1.3,admin3PCode ~ tempSDSeverity1.3$IndicatorHygiene_Access_SS, value.var="HygineAccess", fun.aggregate=sum )
-          
+
+         #new line has been added to remove blank admin3PCode rows
+          tempSDSeverity1.3 <- filter(tempSDSeverity1.3, !is.na(admin3PCode),admin3PCode!="" )
+
+
           for(i in 1:5)
           {
             if(Missing_ss[i] ==  1)  { tempSDSeverity1.3$"1" <- 0  }
@@ -808,7 +843,7 @@ PiNSeverityData <- PiNSeverityData %>%
             if(Missing_ss[i] ==  4)  { tempSDSeverity1.3$"4" <- 0  }
             if(Missing_ss[i] ==  5)  { tempSDSeverity1.3$"5" <- 0  }
           }
-          
+
           tempSDSeverity1.3$total <- tempSDSeverity1.3$`1`+tempSDSeverity1.3$`3`+tempSDSeverity1.3$`4`+ tempSDSeverity1.3$`5`+tempSDSeverity1.3$`2`
           tempSDSeverity1.3$SS1 <- tempSDSeverity1.3$`1`/tempSDSeverity1.3$total
           tempSDSeverity1.3$SS1 <- if(Missing_ss[1]== "1"){ 0 } else {tempSDSeverity1.3$`1`/tempSDSeverity1.3$total}
@@ -817,17 +852,26 @@ PiNSeverityData <- PiNSeverityData %>%
           tempSDSeverity1.3$SS4 <- if(Missing_ss[4]== "4"){ 0 } else {tempSDSeverity1.3$`4`/tempSDSeverity1.3$total}
           tempSDSeverity1.3$SS5 <- if(Missing_ss[5]== "5"){ 0 } else {tempSDSeverity1.3$`5`/tempSDSeverity1.3$total}
           tempSDSeverity1.3$SST <- tempSDSeverity1.3$SS1 + tempSDSeverity1.3$SS2 + tempSDSeverity1.3$SS3 + tempSDSeverity1.3$SS4 + tempSDSeverity1.3$SS5
-          
+
           #IF(N4>=0.25,5,IF(SUM(M4:N4)>=0.25,4,IF(SUM(L4:N4)>=0.25,3,1)))
           tempSDSeverity1.3$SSSD1.3 <- ifelse(tempSDSeverity1.3$SS5> 0.25, 5,
                                             ifelse(tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4> 0.25, 4,
-                                                   ifelse(tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4+tempSDSeverity1.3$SS3> 0.25, 3,
+                                                 ifelse(tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4+tempSDSeverity1.3$SS3> 0.25, 3,
                                                           ifelse(tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4+tempSDSeverity1.3$SS3+tempSDSeverity1.3$SS2>0.25, 2,
                                                                  ifelse(tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4+tempSDSeverity1.3$SS3+tempSDSeverity1.3$SS2+tempSDSeverity1.3$SS1>0.25, 1,1
                                                                  )))))
-          tempSDSeverity1.3$PINRatio <- tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4+tempSDSeverity1.3$SS3  
-        }
-        
+          tempSDSeverity1.3$PINRatio <- tempSDSeverity1.3$SS5+tempSDSeverity1.3$SS4+tempSDSeverity1.3$SS3
+          tempSDSeverity1.3[is.na(tempSDSeverity1.3)] = 0
+          tempSDSeverity1.3 <- filter(tempSDSeverity1.3, !is.na(admin3PCode),admin3PCode!="" )
+          tempSDSeverity1.3 <- tempSDSeverity1.3[nzchar(tempSDSeverity1.3$admin3PCode),]
+
+          # Calculating PiN
+          # Step 1: add SD Population in empSDSeverity1.3 dataframe
+
+          tempSDSeverity1.3<- merge(tempSDSeverity1.3, RData_PopAug2021, by="admin3PCode")
+          tempSDSeverity1.3$PiN <- tempSDSeverity1.3$PINRatio * tempSDSeverity1.3$PopAug2021
+          sum(tempSDSeverity1.3$PiN, na.rm = TRUE)
+        } 
         
         ### Indicator 1.4 - Solid Waste ----
         {
@@ -876,9 +920,22 @@ PiNSeverityData <- PiNSeverityData %>%
                                                                    ifelse(tempSDSeverity1.4$SS5+tempSDSeverity1.4$SS4+tempSDSeverity3$SS3+tempSDSeverity1.4$SS2+tempSDSeverity1.4$SS1>0.25, 1,1
                                                                    )))))
           tempSDSeverity1.4$PINRatio <- tempSDSeverity1.4$SS5+tempSDSeverity1.4$SS4+tempSDSeverity1.4$SS3 
+          
+          
+          tempSDSeverity1.4[is.na(tempSDSeverity1.4)] = 0
+          tempSDSeverity1.4 <- filter(tempSDSeverity1.4, !is.na(admin3PCode),admin3PCode!="" )
+          tempSDSeverity1.4 <- tempSDSeverity1.4[nzchar(tempSDSeverity1.4$admin3PCode),]
+          
+          # Calculating PiN
+          # Step 1: add SD Population in tempSDSeverity1.4 dataframe
+          
+          tempSDSeverity1.4<- merge(tempSDSeverity1.4, RData_PopAug2021, by="admin3PCode")
+          tempSDSeverity1.4$PiN <- tempSDSeverity1.4$PINRatio * tempSDSeverity1.4$PopAug2021
+          sum(tempSDSeverity1.4$PiN, na.rm = TRUE)
+          
+          
+          
          }
-        
-        
         ### Indicator 1.5 - Sanitation Problems ----
         {
           
@@ -930,10 +987,24 @@ PiNSeverityData <- PiNSeverityData %>%
                                                                    )))))
           
           tempSDSeverity1.5$PINRatio <- tempSDSeverity1.5$SS5+tempSDSeverity1.5$SS4+tempSDSeverity1.5$SS3
+          
+          
+          
+          tempSDSeverity1.5[is.na(tempSDSeverity1.5)] = 0
+          tempSDSeverity1.5 <- filter(tempSDSeverity1.5, !is.na(admin3PCode),admin3PCode!="" )
+          tempSDSeverity1.5 <- tempSDSeverity1.5[nzchar(tempSDSeverity1.5$admin3PCode),]
+          
+          # Calculating PiN
+          # Step 1: add SD Population in tempSDSeverity1.5 dataframe
+          
+          tempSDSeverity1.5<- merge(tempSDSeverity1.5, RData_PopAug2021, by="admin3PCode")
+          tempSDSeverity1.5$PiN <- tempSDSeverity1.5$PINRatio * tempSDSeverity1.5$PopAug2021
+          sum(tempSDSeverity1.5$PiN, na.rm = TRUE)
+          
+          
+          
+          
           }
-        
-        
-        
         ### Indicator 1.6 - WASH spend ----
         {
           
@@ -986,11 +1057,18 @@ PiNSeverityData <- PiNSeverityData %>%
           
           tempSDSeverity1.6$PINRatio <- tempSDSeverity1.6$SS5+tempSDSeverity1.6$SS4+tempSDSeverity1.6$SS3  
           
+          tempSDSeverity1.6[is.na(tempSDSeverity1.6)] = 0
+          tempSDSeverity1.6 <- filter(tempSDSeverity1.6, !is.na(admin3PCode),admin3PCode!="" )
+          tempSDSeverity1.6 <- tempSDSeverity1.6[nzchar(tempSDSeverity1.6$admin3PCode),]
+          
+          # Calculating PiN
+          # Step 1: add SD Population in tempSDSeverity1.6 dataframe
+          
+          tempSDSeverity1.6<- merge(tempSDSeverity1.6, RData_PopAug2021, by="admin3PCode")
+          tempSDSeverity1.6$PiN <- tempSDSeverity1.6$PINRatio * tempSDSeverity1.6$PopAug2021
+          sum(tempSDSeverity1.6$PiN, na.rm = TRUE)
+          
         }
-        
-        
-        
-        
         ### Indicator 1.7 - Hand washing Observations ----
         {
           
@@ -1041,18 +1119,24 @@ PiNSeverityData <- PiNSeverityData %>%
                                                                    )))))
           
           tempSDSeverity1.7$PINRatio <- tempSDSeverity1.7$SS5+tempSDSeverity1.7$SS4+tempSDSeverity1.7$SS3
+          
+          tempSDSeverity1.7[is.na(tempSDSeverity1.7)] = 0
+          tempSDSeverity1.7 <- filter(tempSDSeverity1.7, !is.na(admin3PCode),admin3PCode!="" )
+          tempSDSeverity1.7 <- tempSDSeverity1.7[nzchar(tempSDSeverity1.7$admin3PCode),]
+          
+          # Calculating PiN
+          # Step 1: add SD Population in tempSDSeverity1.7 dataframe
+          
+          tempSDSeverity1.7 <- merge(tempSDSeverity1.7, RData_PopAug2021, by="admin3PCode")
+          tempSDSeverity1.7$PiN <- tempSDSeverity1.7$PINRatio * tempSDSeverity1.7$PopAug2021
+          sum(tempSDSeverity1.7$PiN, na.rm = TRUE)
+          
           }
-        
-        
-        
       
-        
-        
-        
       }
-  
+
   ## Summarizing SS at Sub District level -----
-    
+
     {
       
       PiNSeverityDataSS <- PiNSeverityData %>% 
@@ -1087,7 +1171,7 @@ PiNSeverityData <- PiNSeverityData %>%
     
     }
     
-    
+}
   
 W2.Network
 W2.Water_trucking
